@@ -48,7 +48,7 @@ h2{font-size:15px;color:var(--mut);font-weight:500;margin:22px 0 8px}
 .rt{flex:1;min-width:0}.rt b{display:block;font-weight:500}.rt small,.rt i{display:block;color:var(--mut);font-size:13px}
 .rt i{font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .am{text-align:right;font-weight:700;white-space:nowrap}.am small{display:block;font-weight:400;color:var(--mut);font-size:12px}
-.am.out{color:var(--out)}.am.in{color:var(--in)}.am.tr{color:var(--mut)}
+.am.out{color:var(--out)}.am.in{color:var(--in)}.am.tr{color:var(--mut)}.accs.three{gap:8px}.accs.three small{font-size:12px}.accs.three b{font-size:15px;white-space:nowrap}.am.back{color:var(--in)}.am.lend{color:var(--out)}.recv{background:#9575CD}
 .flt{margin:8px 0 4px}.flt input,.flt select{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.frow{display:flex;gap:8px;margin-top:8px}.frow select{min-width:0;padding:10px 8px}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
 .empty{color:var(--mut);text-align:center;padding:28px 0}
@@ -79,6 +79,12 @@ svg{display:block;width:100%;height:auto}
 .cat header b{font-size:17px}
 .chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:4px 6px 4px 12px;margin:8px 8px 0 0}
 .chip button{color:var(--mut);width:22px;height:22px}
+.qk{display:inline-flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:9px 14px;margin:0 8px 8px 0;font-size:14px}
+#toast{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:30;background:#263238;color:#fff;border-radius:12px;padding:6px 8px 6px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:14px;max-width:520px;margin:0 auto}
+#toast[hidden]{display:none}
+#toast button{color:#8fd3ff;font-weight:700;padding:10px 8px}
+#rpt{display:none}
+@media print{html{zoom:1!important}body>*:not(#rpt){display:none!important}#rpt{display:block!important;background:#fff;color:#000;padding:0}#rpt h1{font-size:20px;margin:0 0 10px}#rpt h2{font-size:15px;margin:16px 0 6px;color:#000}#rpt table{border-collapse:collapse;width:100%}#rpt td,#rpt th{border-bottom:1px solid #bbb;padding:4px 6px;text-align:left;font-size:12px}#rpt .n{text-align:right;white-space:nowrap}}
 .add{display:flex;gap:8px;margin-top:10px}
 .add input,.add select,label input,label select,label textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .btn{background:var(--acc);color:#fff;border-radius:10px;padding:10px 16px;font-weight:500;white-space:nowrap}
@@ -110,8 +116,13 @@ svg{display:block;width:100%;height:auto}
 .ghost{padding:10px 16px;border-radius:10px;border:1px solid var(--line)}
 #cf{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30;display:flex;align-items:center;justify-content:center;padding:24px}
 #cf[hidden]{display:none}
-.cbox{background:var(--card);border-radius:18px;padding:22px 20px 16px;max-width:360px;width:100%}
+.cbox{background:var(--card);border-radius:18px;padding:22px 20px 16px;max-width:360px;width:100%;max-height:100%;overflow-y:auto}
 .cbox p{margin:0 0 6px;font-size:17px}
+#warn{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:4;background:#C62828;color:#fff;border-radius:12px;padding:4px 6px;margin:0 0 10px}
+#warn[hidden]{display:none}
+#warn button{display:block;width:100%;text-align:left;color:#fff;padding:8px;font-size:14px;line-height:1.35}
+#lg{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:24px}
+#lg[hidden]{display:none}
 #lk{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
 #lk[hidden]{display:none}
 .lbox{width:100%;max-width:320px;text-align:center}
@@ -121,8 +132,9 @@ svg{display:block;width:100%;height:auto}
 .ldots i.on{background:var(--acc);border-color:var(--acc)}
 .lerr{color:var(--out);min-height:22px;margin:0 0 10px}
 .lpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lpad button:disabled{opacity:.35}
 .lpad button{padding:16px 0;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:22px}
-.cbox input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0 4px}
+.cbox input,.cbox select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0 4px}
 .chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--mut);flex:none}
 .chk.on{background:var(--acc);border-color:var(--acc)}
 .chk.on::after{content:"✓";display:block;color:#fff;text-align:center;font-size:14px;line-height:16px}
@@ -143,7 +155,7 @@ svg{display:block;width:100%;height:auto}
 <body>
 <div class="wrap">
   <div class="mbar"><button id="burger" data-a="menu" aria-label="Menü">☰</button><div class="mm"><button data-a="prev" aria-label="Előző hónap">‹</button><b id="mt"></b><button data-a="next" aria-label="Következő hónap">›</button></div><button id="gear" data-a="tab" data-v="cats" aria-label="Beállítások">⚙</button></div>
-  <main id="v"></main>
+  <div id="warn" hidden></div><main id="v"></main>
 </div>
 <button class="fab" data-a="add">+ Új tétel</button>
 <nav class="nav" id="nav">
@@ -152,10 +164,13 @@ svg{display:block;width:100%;height:auto}
 </nav>
 <div id="sh" hidden></div>
 <div id="cf" hidden></div>
+<div id="lg" hidden></div>
 <div id="lk" hidden></div>
 <div id="tu" hidden></div>
-<div id="dr" hidden><div class="dbg" data-a="menuclose"></div><nav class="dpanel"><b>Menü</b><button data-a="tab" data-v="home">Áttekintés</button><button data-a="tab" data-v="tr">Átvezetések</button><button data-a="tab" data-v="sg">Megtakarítási célok</button><button data-a="tab" data-v="catm">Kategóriák</button><button data-a="tab" data-v="year">Éves kimutatás</button><button data-a="tab" data-v="stat">Havi kimutatás</button><button data-a="tab" data-v="cal">Naptár</button></nav></div>
+<div id="toast" hidden role="status" aria-live="polite"></div>
+<div id="dr" hidden><div class="dbg" data-a="menuclose"></div><nav class="dpanel"><b>Menü</b><button data-a="tab" data-v="home">Áttekintés</button><button data-a="tab" data-v="tr">Átvezetések</button><button data-a="tab" data-v="sg">Megtakarítási célok</button><button data-a="tab" data-v="loan">Hitel</button><button data-a="tab" data-v="recv">Kintlévőség</button><button data-a="tab" data-v="catm">Kategóriák</button><button data-a="tab" data-v="year">Éves kimutatás</button><button data-a="tab" data-v="stat">Havi kimutatás</button><button data-a="tab" data-v="cal">Naptár</button></nav></div>
 <script>
+let LANG='hu';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MN=['Január','Február','Március','Április','Május','Június','Július','Augusztus','Szeptember','Október','November','December'];
@@ -163,39 +178,38 @@ const WD=['vasárnap','hétfő','kedd','szerda','csütörtök','péntek','szomba
 const COL=['#1D6F6A','#C2410C','#3949AB','#B7791F','#8E4585','#2E7D32','#546E7A'];
 const pad=n=>String(n).padStart(2,'0');
 const iso=(y,m,d)=>y+'-'+pad(m+1)+'-'+pad(d);
-const fmt=n=>Math.round(n).toLocaleString('hu-HU')+' Ft';
+const fmt=n=>Math.round(n).toLocaleString(LANG==='en'?'en-US':'hu-HU')+' Ft';
 const now=new Date();
 let S,cur={y:now.getFullYear(),m:now.getMonth()},tab='home',sel=iso(cur.y,cur.m,now.getDate()),f=null;
-function seed(){
-  const c=[{id:'c1',name:'Streaming',items:[{id:'i1',name:'Netflix'},{id:'i2',name:'Disney+'}]},{id:'c2',name:'Lakhatás',items:[{id:'i3',name:'Albérlet'},{id:'i4',name:'Rezsi'}]},{id:'c3',name:'Szórakozás',items:[{id:'i5',name:'Mozi'},{id:'i6',name:'Étterem'}]}];
-  const t=[['in','card',420000,'','',1,'Fizetés'],['in','cash',30000,'','',2,'Készpénz felvétel'],['out','card',4490,'c1','i1',3,'Havi díj'],['out','card',3290,'c1','i2',3,''],['out','card',120000,'c2','i3',5,'Közös költséggel'],['out','cash',18500,'c2','i4',9,'Áram és gáz'],['out','cash',5200,'c3','i5',12,'Esti előadás'],['out','card',14800,'c3','i6',16,'Vacsora barátokkal']];
-  return{cats:c,sample:1,tx:t.map((a,i)=>({id:'t'+i,type:a[0],acc:a[1],amt:a[2],cat:a[3],item:a[4],date:iso(cur.y,cur.m,Math.min(a[5],now.getDate())),note:a[6]}))};
-}
+function seed(){return{cats:[],sample:0,tx:[]}}
+if(new URLSearchParams(location.search).get('reset')==='1'){try{localStorage.clear()}catch(e){}try{history.replaceState(null,'',location.pathname)}catch(e){}}
 try{S=JSON.parse(localStorage.getItem('kv1'))}catch(e){S=null}
 if(!S||!S.cats)S=seed();
-S.sgl=S.sgl||[];S.trash=S.trash||[];S.rec=S.rec||[];S.open=S.open||{cash:0,card:0};S.goalM=S.goalM||{};S.sg=S.sg||[];S.icats=S.icats||[{id:'ic1',name:'Fizetés'},{id:'ic2',name:'Ajándék'},{id:'ic3',name:'Egyéb bevétel'}];
-const save=()=>{try{localStorage.setItem('kv1',JSON.stringify(S))}catch(e){}};
+if(S.sample===1){S.tx=(S.tx||[]).filter(t=>!/^t\d+$/.test(t.id));const usedC=new Set(S.tx.map(t=>t.cat));S.cats=S.cats.filter(c=>!(/^c[1-3]$/.test(c.id)&&!usedC.has(c.id)));S.sample=0;try{localStorage.setItem('kv1',JSON.stringify(S))}catch(e){}}
+S.sgl=S.sgl||[];S.trash=S.trash||[];S.rec=S.rec||[];S.open=S.open||{cash:0,card:0};S.goalM=S.goalM||{};S.sg=S.sg||[];S.icats=S.icats||[];
+let snapDay='';
+const save=()=>{try{localStorage.setItem('kv1',JSON.stringify(S))}catch(e){}if(typeof snapNow==='function'){const d=isoD(now);if(snapDay!==d){const has=()=>snapList().some(x=>x.d===d&&!x.l);if(!has())snapNow('');if(has())snapDay=d}}};
 const uid=()=>Math.random().toString(36).slice(2,9);
-const sgn=t=>t.type==='in'?t.amt:(t.type==='out'?-t.amt:0);
+const sgn=t=>t.type==='in'||t.type==='back'?t.amt:(t.type==='out'||t.type==='lend'?-t.amt:0);
 const bal=a=>(a?S.open[a]:S.open.cash+S.open.card)+S.tx.reduce((s,t)=>t.type==='tr'?(a?s+(t.to===a?t.amt:0)-(t.acc===a?t.amt:0):s):((!a||t.acc===a)?s+sgn(t):s),0);
 const pre=cur.y+'-'+pad(cur.m+1);
 const mpre=()=>cur.y+'-'+pad(cur.m+1);
 const mtx=()=>S.tx.filter(t=>t.date.startsWith(mpre())).sort((a,b)=>b.date.localeCompare(a.date));
-const catN=id=>id==='sav'?'Megtakarítás':(S.cats.find(c=>c.id===id)||{}).name||'';
+const catN=id=>id==='sav'?'Megtakarítás':id==='loan'?'Hitel':(S.cats.find(c=>c.id===id)||{}).name||'';
 const itemN=(c,i)=>{const k=S.cats.find(x=>x.id===c);const it=k&&k.items.find(x=>x.id===i);return it?it.name:''};
 const icN=id=>((S.icats||[]).find(c=>c.id===id)||{}).name||'';
-const title=t=>t.sg?((t.type==='in'?'Kivétel: ':'Megtakarítás: ')+((S.sg.find(x=>x.id===t.sg)||{}).name||'cél')):t.type==='in'?(icN(t.cat)||'Bevétel'):t.type==='tr'?'Átvezetés':(itemN(t.cat,t.item)||catN(t.cat)||'Kiadás');
+const title=t=>t.rc?((t.type==='lend'?'Kölcsön: ':'Visszakapott: ')+((S.recv.find(x=>x.id===t.rc)||{}).name||'')):t.ln?('Hitel: '+((S.loans.find(x=>x.id===t.ln)||{}).name||'')):t.sg?((t.type==='in'?'Kivétel: ':'Megtakarítás: ')+((S.sg.find(x=>x.id===t.sg)||{}).name||'cél')):t.type==='in'?(icN(t.cat)||'Bevétel'):t.type==='tr'?'Átvezetés':(itemN(t.cat,t.item)||catN(t.cat)||'Kiadás');
 const accN=a=>a==='cash'?'Készpénz':'Bankkártya';
-const row=t=>`<button class="row" data-a="edit" data-v="${t.id}"><span class="dot ${t.acc}"></span><span class="rt"><b>${esc(title(t))}</b>${t.type==='out'&&itemN(t.cat,t.item)?`<small>${esc(catN(t.cat))}</small>`:''}${t.type==='tr'?`<small>${accN(t.acc)} → ${accN(t.to)}</small>`:''}${t.note?`<i>${esc(t.note)}</i>`:''}</span><span class="am ${t.type}">${t.type==='in'?'+':t.type==='tr'?'':'−'}${fmt(t.amt)}<small>${t.type==='tr'?'':accN(t.acc)}</small></span></button>`;
-const dayHead=d=>{const x=new Date(d+'T12:00:00');return `${x.getDate()}. ${WD[x.getDay()]}`};
+const row=t=>`<button class="row" data-a="edit" data-v="${t.id}"><span class="dot ${t.acc}"></span><span class="rt"><b>${esc(title(t))}</b>${t.type==='out'&&itemN(t.cat,t.item)?`<small>${esc(catN(t.cat))}</small>`:''}${t.type==='tr'?`<small>${accN(t.acc)} → ${accN(t.to)}</small>`:''}${t.note?`<i>${esc(t.note)}</i>`:''}</span><span class="am ${t.type}">${t.type==='in'||t.type==='back'?'+':t.type==='tr'?'':'−'}${fmt(t.amt)}<small>${t.type==='tr'?'':accN(t.acc)}</small></span></button>`;
+const dayHead=d=>{const x=new Date(d+'T12:00:00');return LANG==='en'?`${WD[x.getDay()]}, ${MN[x.getMonth()].slice(0,3)} ${x.getDate()}`:`${x.getDate()}. ${WD[x.getDay()]}`};
 const empty='<div class="empty">Még nincs tétel ebben az időszakban. Az „Új tétel” gombbal rögzíthetsz egyet.</div>';
 
 function vHome(){
   const c=bal('cash'),b=bal('card'),tot=c+b,pc=c>0&&b>0?c/(c+b)*100:(c>0?100:0),pb=c>0&&b>0?100-pc:(b>0?100:0);
   const tx=mtx(),inc=tx.filter(t=>t.type==='in').reduce((s,t)=>s+t.amt,0),out=tx.filter(t=>t.type==='out').reduce((s,t)=>s+t.amt,0);
-  let h=`<section class="hero"><small>Összes pénz</small><div class="tot">${fmt(tot)}</div><div class="split"><i class="cash" style="width:${pc}%"></i><i class="card" style="width:${pb}%"></i></div><div class="accs"><div><small><span class="sw cash"></span>Készpénz</small><b>${fmt(c)}</b></div><div><small><span class="sw card"></span>Bankkártya</small><b>${fmt(b)}</b></div></div></section>`;
+  let h=`<section class="hero"><small>Összes pénz</small><div class="tot">${fmt(tot)}</div><div class="split"><i class="cash" style="width:${pc}%"></i><i class="card" style="width:${pb}%"></i></div><div class="accs${rcSum()>0?' three':''}"><div><small><span class="sw cash"></span>Készpénz</small><b>${fmt(c)}</b></div><div><small><span class="sw card"></span>Bankkártya</small><b>${fmt(b)}</b></div>${rcSum()>0?`<div><small><span class="sw recv"></span>Kintlévőség</small><b>${fmt(rcSum())}</b></div>`:''}</div></section>`;
   h+=`<div class="sum"><div><small>Bevétel</small><b style="color:var(--in)">${fmt(inc)}</b></div><div><small>Kiadás</small><b style="color:var(--out)">${fmt(out)}</b></div></div>`;
-  return h+sgSummary()+recSection();
+  return h+quickRow()+bkNotice()+upcoming()+lnHome()+rcHome()+sgSummary()+recSection();
 }
 let ge=false,pend='',lt='out',dv=false,recId=null,lkIn='',smode=false,sset=new Set(),vis=[],yv=now.getFullYear(),qf={q:'',acc:'',type:'',cat:''};
 const twice=k=>{if(pend===k){pend='';return true}pend=k;return false};
@@ -205,7 +219,7 @@ function goalCard(net){
   const ok=net>=g,pct=Math.max(0,Math.min(100,net/g*100)),diff=net-g;
   return `<div class="goal ${ok?'ok':'bad'}"><div class="gh"><b>Havi megtakarítási cél</b><button class="link" data-a="goaledit">Módosítás</button></div><div class="gv">${fmt(net)} <small>/ ${fmt(g)}</small></div><div class="gbar"><i style="width:${pct}%"></i></div><p>${ok?(diff>0?`Teljesítve, ${fmt(diff)} a cél felett vagy.`:'Teljesítve, pont elérted a célt.'):`Még ${fmt(-diff)} hiányzik a célig.`}</p></div>`;
 }
-const trow=t=>`<div class="row"><span class="dot ${t.acc}"></span><span class="rt"><b>${esc(title(t))}</b><small>${esc(t.date.split('-').join('. '))}.</small>${t.note?`<i>${esc(t.note)}</i>`:''}</span><span class="am ${t.type}"><s>${t.type==='in'?'+':t.type==='tr'?'':'−'}${fmt(t.amt)}</s><small>${accN(t.acc)}</small></span></div><div class="tact"><button class="link" data-a="restore" data-v="${t.id}">Visszaállítás</button><button class="link" data-a="purge" data-v="${t.id}">Végleges törlés</button></div>`;
+const trow=t=>`<div class="row"><span class="dot ${t.acc}"></span><span class="rt"><b>${esc(title(t))}</b><small>${esc(t.date.split('-').join('. '))}.</small>${t.note?`<i>${esc(t.note)}</i>`:''}</span><span class="am ${t.type}"><s>${t.type==='in'||t.type==='back'?'+':t.type==='tr'?'':'−'}${fmt(t.amt)}</s><small>${accN(t.acc)}</small></span></div><div class="tact"><button class="link" data-a="restore" data-v="${t.id}">Visszaállítás</button><button class="link" data-a="purge" data-v="${t.id}">Végleges törlés</button></div>`;
 function vList(){
   const sg=`<div class="seg" style="margin:0 0 4px;font-size:14px"><button data-a="dv" data-v="0" class="${dv?'':'on'}">Tételek</button><button data-a="dv" data-v="1" class="${dv?'on':''}">Törölt (${S.trash.filter(t=>t.type===lt).length})</button></div>`;
   if(dv){
@@ -213,15 +227,15 @@ function vList(){
     return sg+(tr.length?'<h2>Legutóbb törölt tételek</h2>'+tr.map(trow).join(''):'<div class="empty">Nincs törölt tétel.</div>');
   }
   const sl=(id,v,o)=>`<select id="${id}">${o.map(x=>`<option value="${x[0]}"${x[0]===v?' selected':''}>${esc(x[1])}</option>`).join('')}</select>`;
-  return sg+`<div class="sbar"><button class="link" data-a="selmode">${smode?'Kijelölés vége':'Kijelölés'}</button>${smode?`<button class="btn" data-a="selall">Mind kijelölése</button><button class="btn" data-a="seldel"${sset.size?'':' disabled'}>Törlés (${sset.size})</button>`:''}</div><div class="flt"><input id="fq" placeholder="Keresés: tétel, megjegyzés, összeg" value="${esc(qf.q)}"><div class="frow">${sl('fa2',qf.acc,[['','Mind'],['cash','Készpénz'],['card','Bankkártya']])}${sl('fc2',qf.cat,[['','Mind']].concat((lt==='out'?S.cats:S.icats).map(c=>[c.id,c.name]),lt==='out'?[['sav','Megtakarítás']]:[]))}</div></div><div id="lres">${listHtml()}</div>`;
+  return sg+`<div class="sbar"><button class="link" data-a="selmode">${smode?'Kijelölés vége':'Kijelölés'}</button>${smode?`<button class="btn" data-a="selall">Mind kijelölése</button><button class="btn" data-a="seldel"${sset.size?'':' disabled'}>Törlés (${sset.size})</button>`:''}</div><div class="flt"><input id="fq" placeholder="Keresés: tétel, megjegyzés, összeg" value="${esc(qf.q)}"><div class="frow">${sl('fa2',qf.acc,[['','Mind'],['cash','Készpénz'],['card','Bankkártya']])}${sl('fc2',qf.cat,[['','Mind']].concat((lt==='out'?S.cats:S.icats).map(c=>[c.id,c.name]),lt==='out'?[['sav','Megtakarítás'],['loan','Hitel']]:[]))}</div></div><div id="lres">${listHtml()}</div>`;
 }
-function srow(t){const r=row(t);if(!smode||t.sg)return r;return r.replace('data-a="edit"','data-a="selone"').replace('<span class="dot','<span class="chk'+(sset.has(t.id)?' on':'')+'"></span><span class="dot')}
+function srow(t){const r=row(t);if(!smode||t.sg||t.ln)return r;return r.replace('data-a="edit"','data-a="selone"').replace('<span class="dot','<span class="chk'+(sset.has(t.id)?' on':'')+'"></span><span class="dot')}
 function listHtml(){
   const act=qf.q||qf.acc||qf.cat,q=qf.q.toLowerCase();
   const base=act?S.tx.slice().sort((a,b)=>b.date.localeCompare(a.date)):mtx();
   const tx=base.filter(t=>t.type===lt&&(!qf.acc||t.acc===qf.acc)&&(!qf.cat||t.cat===qf.cat)&&(!q||[title(t),catN(t.cat),t.note||'',String(Math.round(t.amt))].some(s=>s.toLowerCase().includes(q))));
   if(!tx.length)return act?'<div class="empty">Nincs találat.</div>':empty;
-  let h=`<div class="sum"><div><small>${lt==='in'?'Bevételek':'Kiadások'} összesen</small><b style="color:var(${lt==='in'?'--in':'--out'})">${fmt(tx.reduce((s,t)=>s+t.amt,0))}</b></div></div>`+(act?`<h2>Találatok: ${tx.length} (minden hónapban)</h2>`:''),last='';vis=tx.filter(t=>!t.sg).map(t=>t.id);
+  let h=`<div class="sum"><div><small>${lt==='in'?'Bevételek':'Kiadások'} összesen</small><b style="color:var(${lt==='in'?'--in':'--out'})">${fmt(tx.reduce((s,t)=>s+t.amt,0))}</b></div></div>`+(act?`<h2>Találatok: ${tx.length} (minden hónapban)</h2>`:''),last='';vis=tx.filter(t=>!t.sg&&!t.ln).map(t=>t.id);
   tx.forEach(t=>{if(t.date!==last){last=t.date;h+=`<h2>${dayHead(t.date)}</h2>`}h+=srow(t)});
   return h;
 }
@@ -236,11 +250,40 @@ function migSgl(){
 function syncSg(){S.sg.forEach(g=>{g.saved=Math.max(0,(g.base||0)+S.tx.filter(t=>t.sg===g.id).reduce((s,t)=>s+(t.type==='out'?t.amt:-t.amt),0))})}
 function goalFor(){const k=mpre();let b=null;Object.keys(S.goalM).forEach(x=>{if(x<=k&&(b===null||x>b))b=x});return b===null?(+S.goal||0):S.goalM[b]}
 function hp(s){let h=5381;for(const c of 'kv|'+s)h=((h<<5)+h+c.charCodeAt(0))|0;return String(h)}
-function lockShow(err){const el=$('#lk');el.hidden=false;el.innerHTML=`<div class="lbox"><h3>Költségvetés</h3><p style="margin:0;color:var(--mut)">Add meg a PIN kódot</p><div class="ldots">${[0,1,2,3].map(i=>`<i class="${i<lkIn.length?'on':''}"></i>`).join('')}</div><p class="lerr">${err||''}</p><div class="lpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-a="lkd" data-v="${n}">${n}</button>`).join('')}<span></span><button data-a="lkd" data-v="0">0</button><button data-a="lkb" aria-label="Törlés">⌫</button></div></div>`}
+let BIO_OK=false;
+const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64u=s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
+async function bioDetect(){try{BIO_OK=!!(window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(e){BIO_OK=false}render()}
+async function bioEnable(){
+  const c=await navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'Költségvetés'},user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'koltsegvetes',displayName:'Költségvetés'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000}});
+  S.bio=b64u(c.rawId);save();render();
+}
+async function bioAuth(){
+  const c=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:unb64u(S.bio)}],userVerification:'required',timeout:60000}});
+  return !!c;
+}
+async function bioUnlock(){
+  if(!S.bio||$('#lk').hidden)return;
+  try{if(await bioAuth()){if($('#lk').hidden)return;$('#lk').hidden=true;lkIn='';S.pinFail={n:0,until:0};save();startFlow()}}catch(e){}
+}
+function bioUi(){
+  const p='<p style="margin:6px 0 0;color:var(--mut);font-size:13px">';
+  if(!S.pin)return p+'Biometrikus feloldáshoz előbb állíts be PIN-t.</p>';
+  if(!BIO_OK&&!S.bio)return p+'A biometrikus feloldás (Face ID, Touch ID, ujjlenyomat) ezen az eszközön vagy böngészőben nem érhető el.</p>';
+  return S.bio?'<div class="add" style="margin-top:8px"><button class="btn" data-a="biooff" style="background:var(--mut)">Biometrikus feloldás kikapcsolása</button></div>'+p+'Biometrikus feloldás be van kapcsolva (Face ID, Touch ID vagy ujjlenyomat).</p>':'<div class="add" style="margin-top:8px"><button class="btn" data-a="bioset">Biometrikus feloldás bekapcsolása</button></div>';
+}
+let lkT=null;
+function lockShow(err){
+  const f=S.pinFail||(S.pinFail={n:0,until:0}),left=Math.ceil((f.until-Date.now())/1000),lk=left>0,dis=lk?' disabled':'',el=$('#lk');
+  el.hidden=false;
+  const msg=lk?'Túl sok hibás próbálkozás. Próbáld újra '+left+' másodperc múlva.':(err||'');
+  el.innerHTML=`<div class="lbox"><h3>Költségvetés</h3><p style="margin:0;color:var(--mut)">Add meg a PIN kódot</p><div class="ldots">${[0,1,2,3].map(i=>`<i class="${i<lkIn.length?'on':''}"></i>`).join('')}</div><p class="lerr">${msg}</p><div class="lpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-a="lkd" data-v="${n}"${dis}>${n}</button>`).join('')}<span></span><button data-a="lkd" data-v="0"${dis}>0</button><button data-a="lkb" aria-label="Törlés"${dis}>⌫</button></div>${S.bio?'<button class="link" data-a="lkbio" style="margin-top:14px">Biometrikus feloldás</button>':''}</div>`;
+  clearTimeout(lkT);if(lk)lkT=setTimeout(()=>{if(!$('#lk').hidden)lockShow()},1000);
+}
 const prv=()=>S.payRem===undefined?1:S.payRem;
 function nextDueD(r){const t=new Date(now.getFullYear(),now.getMonth(),now.getDate());let y=t.getFullYear(),m=t.getMonth();for(let k=0;k<3;k++){const dim=new Date(y,m+1,0).getDate(),d=new Date(y,m,Math.min(r.day,dim));if(d>=t)return d;m++;if(m>11){m=0;y++}}return t}
-function nextDue(r){const d=nextDueD(r);return d.getFullYear()+'. '+MN[d.getMonth()].toLowerCase()+' '+d.getDate()+'.'}
-function sgDueTxt(g){if(!g.due)return '';const p=g.due.split('-').map(Number);return 'Határidő: '+p[0]+'. '+MN[p[1]-1].toLowerCase()}
+function nextDue(r){const d=nextDueD(r);return LANG==='en'?MN[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear():d.getFullYear()+'. '+MN[d.getMonth()].toLowerCase()+' '+d.getDate()+'.'}
+function sgDueTxt(g){if(!g.due)return '';const p=g.due.split('-').map(Number);return 'Határidő: '+p[0]+'. '+(LANG==='en'?MN[p[1]-1]:MN[p[1]-1].toLowerCase())}
 function sgNeed(g){if(!g.due||g.saved>=g.target)return '';const p=g.due.split('-').map(Number),left=(p[0]*12+p[1])-(now.getFullYear()*12+now.getMonth()+1)+1;if(left<1)return 'A határidő lejárt.';return 'Havonta '+fmt(Math.ceil((g.target-g.saved)/left))+' félretételével elérhető a cél ('+left+' hónap van hátra).'}
 function sgSummary(){
   if(!S.sg.length)return '';
@@ -256,7 +299,7 @@ function vYear(){
   const rows=[];
   for(let m=0;m<12;m++){const k=yv+'-'+pad(m+1),l=S.tx.filter(t=>t.date.startsWith(k));rows.push({m,i:l.filter(t=>t.type==='in').reduce((s,t)=>s+t.amt,0),o:l.filter(t=>t.type==='out').reduce((s,t)=>s+t.amt,0)})}
   const ti=rows.reduce((s,r)=>s+r.i,0),te=rows.reduce((s,r)=>s+r.o,0),mx=Math.max(1,...rows.map(r=>Math.max(r.i,r.o))),bw=300/12,net=ti-te;
-  let h=`<div class="yh"><button data-a="yprev" aria-label="Előző év">‹</button><b>${yv}</b><button data-a="ynext" aria-label="Következő év">›</button></div>`;
+  let h=rptBtns('year')+`<div class="yh"><button data-a="yprev" aria-label="Előző év">‹</button><b>${yv}</b><button data-a="ynext" aria-label="Következő év">›</button></div>`;
   h+=`<div class="sum"><div><small>Bevétel</small><b style="color:var(--in)">${fmt(ti)}</b></div><div><small>Kiadás</small><b style="color:var(--out)">${fmt(te)}</b></div></div>`;
   h+=`<div class="sum"><div><small>Megtakarítás</small><b style="color:var(${net>=0?'--in':'--out'})">${fmt(net)}</b></div><div><small>Havi átlag megtakarítás</small><b>${fmt(net/12)}</b></div></div>`;
   h+=`<div class="card2"><h3>Bevétel és kiadás havonta</h3><svg viewBox="0 0 300 120" role="img" aria-label="Havi bevétel és kiadás oszlopdiagram">${rows.map(r=>`<rect x="${r.m*bw+2}" y="${100-r.i/mx*95}" width="${bw/2-2}" height="${r.i/mx*95}" rx="1.5" fill="var(--in)"/><rect x="${r.m*bw+bw/2}" y="${100-r.o/mx*95}" width="${bw/2-2}" height="${r.o/mx*95}" rx="1.5" fill="var(--out)"/><text x="${r.m*bw+bw/2}" y="114" font-size="8" text-anchor="middle" fill="var(--mut)">${r.m+1}</text>`).join('')}</svg></div>`;
@@ -288,7 +331,7 @@ function vCal(){
   for(let d=1;d<=n;d++){
     const k=iso(cur.y,cur.m,d),o=tx.filter(t=>t.date===k&&t.type==='out').reduce((s,t)=>s+t.amt,0),hasIn=tx.some(t=>t.date===k&&t.type==='in');
     const isT=now.getFullYear()===cur.y&&now.getMonth()===cur.m&&now.getDate()===d;
-    h+=`<button data-a="day" data-v="${k}" class="${k===sel?'sel ':''}${isT?'tod':''}">${d}${o?`<small>−${o>=1000?Math.round(o/1000)+'e':o}</small>`:''}${hasIn?'<em></em>':''}</button>`;
+    h+=`<button data-a="day" data-v="${k}" class="${k===sel?'sel ':''}${isT?'tod':''}">${d}${o?`<small>−${o>=1000?Math.round(o/1000)+(LANG==='en'?'k':'e'):o}</small>`:''}${hasIn?'<em></em>':''}</button>`;
   }
   h+='</div>';
   const dt=S.tx.filter(t=>t.date===sel);
@@ -303,7 +346,7 @@ function vStat(){
   const ent=Object.entries(by).sort((a,b)=>b[1]-a[1]),C=2*Math.PI*52;
   let acc=0,arcs='';
   ent.forEach((e,i)=>{const L=e[1]/tot*C;arcs+=`<circle cx="70" cy="70" r="52" fill="none" stroke="${COL[i%COL.length]}" stroke-width="22" stroke-dasharray="${L} ${C-L}" stroke-dashoffset="${-acc}" transform="rotate(-90 70 70)"/>`;acc+=L});
-  let h=`<div class="card2"><h3>Kiadások kategóriánként</h3>${tot?`<svg viewBox="0 0 140 140" style="max-width:200px;margin:0 auto"><circle cx="70" cy="70" r="52" fill="none" stroke="var(--line)" stroke-width="22"/>${arcs}<text x="70" y="74" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">${fmt(tot)}</text></svg><ul class="leg">${ent.map((e,i)=>`<li><span><span class="sw" style="background:${COL[i%COL.length]}"></span>${esc(catN(e[0])||'Egyéb')}</span><b>${fmt(e[1])}</b></li>`).join('')}</ul>`:'<div class="empty">Nincs kiadás.</div>'}</div>`;
+  let h=rptBtns('month')+`<div class="card2"><h3>Kiadások kategóriánként</h3>${tot?`<svg viewBox="0 0 140 140" style="max-width:200px;margin:0 auto"><circle cx="70" cy="70" r="52" fill="none" stroke="var(--line)" stroke-width="22"/>${arcs}<text x="70" y="74" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">${fmt(tot)}</text></svg><ul class="leg">${ent.map((e,i)=>`<li><span><span class="sw" style="background:${COL[i%COL.length]}"></span>${esc(catN(e[0])||'Egyéb')}</span><b>${fmt(e[1])}</b></li>`).join('')}</ul>`:'<div class="empty">Nincs kiadás.</div>'}</div>`;
   const n=new Date(cur.y,cur.m+1,0).getDate(),dd=Array.from({length:n},(_,i)=>outs.filter(t=>t.date===iso(cur.y,cur.m,i+1)).reduce((s,t)=>s+t.amt,0)),mx=Math.max(1,...dd),bw=300/n;
   h+=`<div class="card2"><h3>Napi kiadások</h3><svg viewBox="0 0 300 100" role="img" aria-label="Napi kiadások oszlopdiagram">${dd.map((v,i)=>`<rect x="${i*bw+1}" y="${90-v/mx*85}" width="${Math.max(1,bw-2)}" height="${v/mx*85}" rx="2" fill="var(--out)"/>`).join('')}<line x1="0" y1="90" x2="300" y2="90" stroke="var(--line)"/><text x="0" y="99" font-size="8" fill="var(--mut)">1.</text><text x="300" y="99" font-size="8" text-anchor="end" fill="var(--mut)">${n}.</text></svg></div>`;
   let run=S.open.cash+S.open.card-S.sgl.filter(x=>x.date<mpre()).reduce((s,x)=>s+x.amt,0)+S.tx.filter(t=>t.date<mpre()).reduce((s,t)=>s+sgn(t),0);
@@ -324,13 +367,244 @@ function vStat(){
   h+='</div>';
   return h;
 }
+
+let lnId=null,lp=null;
+const lnYM=()=>now.getFullYear()+'-'+pad(now.getMonth()+1);
+const lnDateOf=day=>{const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();return iso(now.getFullYear(),now.getMonth(),Math.min(day,dim))};
+const ymAdd=(ym,k)=>{const p=ym.split('-').map(Number),d=new Date(p[0],p[1]-1+k,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)};
+const dBetween=(a,b)=>Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5);
+const lnPays=l=>S.tx.filter(t=>t.ln===l.id).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+const lnRem=l=>Math.max(0,l.total-lnPays(l).reduce((s,t)=>s+t.amt,0));
+const lnSince=l=>l.since||S.tx.filter(t=>t.ln===l.id&&t.lm).map(t=>t.lm).sort()[0]||lnYM();
+function lnMissed(l){const cur=lnYM(),out=[];let m=lnSince(l),g=0;while(m<cur&&m<=l.end&&g++<48){if(!S.tx.some(t=>t.ln===l.id&&t.lm===m))out.push(m);m=ymAdd(m,1)}return out}
+const lnLeft=l=>{const pe=l.end.split('-').map(Number);return Math.max(0,(pe[0]*12+pe[1])-(now.getFullYear()*12+now.getMonth()+1)+1)};
+const lnDueM=(l,y,m)=>new Date(y,m,Math.min(l.day,new Date(y,m+1,0).getDate()));
+const lnDueD=l=>lnDueM(l,now.getFullYear(),now.getMonth());
+const lnNextD=l=>{const d=new Date(now.getFullYear(),now.getMonth()+1,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)<=l.end?lnDueM(l,d.getFullYear(),d.getMonth()):null};
+function lnState(l){const rem=lnRem(l),missed=lnMissed(l),done=lnDone(l),d=lnDiff(l);return {rem,missed,done,d,curOver:!done&&d<0&&rem>0}}
+const recNm=x=>x.type==='tr'?'Átvezetés':x.type==='in'?(icN(x.cat)||'Bevétel'):(itemN(x.cat,x.item)||catN(x.cat)||'Kiadás');
+const lnDone=l=>S.tx.some(t=>t.ln===l.id&&t.lm===lnYM());
+const fmtD=d=>LANG==='en'?MN[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear():d.getFullYear()+'. '+MN[d.getMonth()].toLowerCase()+' '+d.getDate()+'.';
+const fmtM=ym=>{const p=ym.split('-').map(Number);return LANG==='en'?MN[p[1]-1]+' '+p[0]:p[0]+'. '+MN[p[1]-1].toLowerCase()};
+function lnCard(l,full){
+  const s=lnState(l),rem=s.rem,off=rem<=0,diff=s.d,due=lnDueD(l),n=s.missed.length+(s.curOver?1:0);
+  let st,cls='';
+  if(off){st='Kifizetve';cls='ok'}
+  else if(s.missed.length>0){st='Hátralék: '+n+' hónap ('+fmt(n*l.pay)+')';cls='bad'}
+  else if(s.done){st='Ebben a hónapban befizetve ✓';cls='ok'}
+  else if(diff<0){st='Késik: '+(-diff)+' napja esedékes';cls='bad'}
+  else if(diff===0){st='Ma esedékes';cls='bad'}
+  else if(diff<=3){st='Hamarosan esedékes: '+fmtD(due);cls='bad'}
+  else st='Következő törlesztés: '+fmtD(due);
+  const p=Math.max(0,Math.min(100,(l.total-rem)/l.total*100)),left=lnLeft(l);
+  const sc=cls==='bad'?'color:var(--out);font-weight:500':cls==='ok'?'color:var(--in)':'';
+  const unpaid=s.missed.length+(s.done?0:1);
+  const pays=full?lnPays(l).slice(-8).reverse():[];
+  const hist=pays.length?'<p style="margin:10px 0 0;font-weight:500">Befizetések</p>'+pays.map(t=>`<div style="display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center;margin-top:6px;font-size:14px"><span style="white-space:nowrap">${t.date.split('-').join('. ')}.</span><span style="white-space:nowrap">${fmt(t.amt)}</span><span style="white-space:nowrap">${accN(t.acc)}</span><button class="link" style="margin-left:auto" data-a="lnpundo" data-v="${t.id}">Visszavonás</button></div>`).join(''):'';
+  return `<div class="goal ${cls}"><div class="gh"><b>${esc(l.name)}</b>${full?`<span style="display:flex;gap:14px"><button class="link" data-a="lnedit" data-v="${l.id}">Szerkesztés</button><button class="link" data-a="lndel" data-v="${l.id}">Törlés</button></span>`:''}</div><div class="gv">${fmt(rem)} <small>/ ${fmt(l.total)}</small></div><div class="gbar"><i style="width:${p}%;background:var(--acc)"></i></div><p>Havi törlesztőrészlet: ${fmt(l.pay)}</p><p style="${sc}">${st}</p>${full?`<p>Esedékesség: minden hónap ${l.day}. napján</p><p>Lejárat: ${fmtM(l.end)}, hátralévő hónapok: ${left}</p>`:''}<div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;align-items:center">${!off&&unpaid>0?`<button class="btn" data-a="lnpay" data-v="${l.id}">Befizettem</button>`:''}</div>${hist}</div>`;
+}
+const lnHome=()=>{const a=S.loans.filter(l=>lnRem(l)>0);return a.length?'<h2>Hitel</h2>'+a.map(l=>lnCard(l,false)).join(''):''};
+function vLoan(){return (S.loans.length?S.loans.map(l=>lnCard(l,true)).join(''):'<div class="empty">Még nincs hitel felvéve.</div>')+'<button class="btn" data-a="lnnew" style="width:100%;margin-top:6px">Új hitel</button>'}
+const LNT=['Áruhitel','Személyi kölcsön','Lakáshitel','Autótörlesztő','Babaváró hitel','Diákhitel','Folyószámlahitel','Hitelkártya','Szabad felhasználású jelzáloghitel','Lakásfelújítási hitel','Lízing','Munkáltatói kölcsön','Magánkölcsön','Egyéb'];
+function lnForm(id){
+  const l=id?S.loans.find(x=>x.id===id):null;lnId=id||null;
+  const lb='display:block;color:var(--mut);font-size:13px;margin-top:8px',el=$('#cf'),cur=l?l.name:LNT[0],opts=(LNT.includes(cur)?LNT:[cur].concat(LNT)).map(k=>`<option value="${esc(k)}"${k===cur?' selected':''}>${esc(k)}</option>`).join('');
+  el.innerHTML=`<div class="cbox" role="dialog"><p style="font-weight:700">${l?'Hitel szerkesztése':'Új hitel'}</p><label style="${lb}">Hitel típusa<select id="ln-n">${opts}</select></label><label style="${lb}">Hitel összege (Ft)<input id="ln-t" type="number" inputmode="numeric" value="${l?l.total:''}"></label><p style="margin:2px 0 0;color:var(--mut);font-size:13px">A hátralévő tartozás a befizetésekkel csökken.</p><label style="${lb}">Havi törlesztőrészlet (Ft)<input id="ln-p" type="number" inputmode="numeric" value="${l?l.pay:''}"></label><label style="${lb}">Törlesztés napja<input id="ln-d" type="date" value="${l?lnDateOf(l.day):''}"></label><p style="margin:2px 0 0;color:var(--mut);font-size:13px">A hiteltörlesztő esedékességének napja. A naptárban válaszd ki ezt a napot, minden hónapban erre a napra esik majd a törlesztés.</p><label style="${lb}">Lejárati dátum<input id="ln-e" type="month" value="${l?l.end:''}"></label><p id="ln-err" style="margin:8px 0 0;color:var(--out)"></p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="lnsave">Mentés</button></div></div>`;
+  el.hidden=false;
+}
+function lnPayForm(id){
+  const l=S.loans.find(x=>x.id===id);if(!l)return;
+  const s=lnState(l),unpaid=s.missed.concat(s.done?[]:[lnYM()]),rem=s.rem;
+  lp={id,acc:'card',m:unpaid[0]};const el=$('#cf');
+  el.innerHTML=`<div class="cbox" role="dialog"><p style="font-weight:700">Hitel törlesztése: ${esc(l.name)}</p><div class="seg" style="margin:0 0 4px"><button data-a="lpacc" data-v="cash">Készpénz</button><button data-a="lpacc" data-v="card" class="on">Bankkártya</button></div>${unpaid.length>1?`<label style="display:block;color:var(--mut);font-size:13px;margin-top:10px">Melyik hónapra?<select id="lp-m">${unpaid.map(m=>`<option value="${m}">${fmtM(m)}</option>`).join('')}</select></label>`:''}<label style="display:block;color:var(--mut);font-size:13px;margin-top:10px">Összeg (Ft)<input id="lp-a" type="number" inputmode="numeric" value="${Math.round(Math.min(l.pay,rem))}"></label><p id="lp-err" style="margin:8px 0 0;color:var(--out)"></p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="lnpayok">Befizetés rögzítése</button></div></div>`;
+  el.hidden=false;
+}
+const lnDiff=l=>{const t=new Date(now.getFullYear(),now.getMonth(),now.getDate()),dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();return Math.round((new Date(t.getFullYear(),t.getMonth(),Math.min(l.day,dim))-t)/864e5)};
+function updWarn(){
+  const el=$('#warn'),rows=[];
+  S.loans.forEach(l=>{const s=lnState(l);if(s.rem<=0)return;const n=s.missed.length+(s.curOver?1:0);if(!n)return;
+    rows.push(['loan',n===1&&s.curOver?'Elmaradt a(z) '+l.name+' törlesztése: '+fmt(l.pay)+', '+(-s.d)+' napja volt esedékes.':'Elmaradt a(z) '+l.name+' törlesztése '+n+' hónapra: '+fmt(n*l.pay)+'.'])});
+  S.recv.filter(r=>rcRem(r)>0&&rcDays(r)!==null&&rcDays(r)<0).forEach(r=>rows.push(['recv','Lejárt a visszafizetési határidő: '+r.name+' tartozása ('+fmt(rcRem(r))+'), '+(-rcDays(r))+' napja.']));
+  if(!rows.length){el.hidden=true;el.innerHTML='';return}
+  el.hidden=false;
+  el.innerHTML=rows.map(r=>`<button data-a="tab" data-v="${r[0]}"><span>⚠ </span><span>${esc(r[1])}</span></button>`).join('');
+}
+
+let rcId=null,rp=null;
+const isoD=d=>iso(d.getFullYear(),d.getMonth(),d.getDate());
+const rcBack=r=>S.tx.filter(t=>t.rc===r.id&&t.type==='back').reduce((s,t)=>s+t.amt,0);
+const rcRem=r=>r.closed?0:Math.max(0,r.total-rcBack(r));
+const rcSum=()=>(S.recv||[]).reduce((s,r)=>s+rcRem(r),0);
+const rcDate=s=>{const p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])};
+const rcDays=r=>{if(!r.due)return null;const t=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.round((rcDate(r.due)-t)/864e5)};
+function rcCard(r,full){
+  const rem=rcRem(r),dd=rcDays(r);let st,cls='';
+  if(r.closed)st='Lezárva';
+  else if(rem<=0){st='Visszafizetve';cls='ok'}
+  else if(dd===null)st='Nincs határidő megadva';
+  else if(dd<0){st='Lejárt a határidő: '+(-dd)+' napja';cls='bad'}
+  else if(dd===0){st='Ma esedékes';cls='bad'}
+  else if(dd<=3){st='Hamarosan esedékes: '+fmtD(rcDate(r.due));cls='bad'}
+  else st='Határidő: '+fmtD(rcDate(r.due));
+  const p=Math.max(0,Math.min(100,r.total>0?(r.total-rem)/r.total*100:0));
+  const sc=cls==='bad'?'color:var(--out);font-weight:500':cls==='ok'?'color:var(--in)':'';
+  const pays=full?S.tx.filter(t=>t.rc===r.id&&t.type==='back').sort((a,b)=>a.date<b.date?1:-1).slice(0,8):[];
+  const hist=pays.length?'<p style="margin:10px 0 0;font-weight:500">Befizetések</p>'+pays.map(t=>`<div style="display:flex;flex-wrap:wrap;gap:2px 12px;align-items:center;margin-top:6px;font-size:14px"><span style="white-space:nowrap">${t.date.split('-').join('. ')}.</span><span style="white-space:nowrap">${fmt(t.amt)}</span><span style="white-space:nowrap">${accN(t.acc)}</span><button class="link" style="margin-left:auto" data-a="rcpundo" data-v="${t.id}">Visszavonás</button></div>`).join(''):'';
+  return `<div class="goal ${cls}"><div class="gh"><b>${esc(r.name)}</b>${full?`<span style="display:flex;gap:14px"><button class="link" data-a="rcedit" data-v="${r.id}">Szerkesztés</button><button class="link" data-a="rcdel" data-v="${r.id}">Törlés</button></span>`:''}</div><div class="gv">${fmt(rem)} <small>/ ${fmt(r.total)}</small></div><div class="gbar"><i style="width:${p}%;background:var(--acc)"></i></div><p style="${sc}">${st}</p>${r.inst>0&&rem>0?`<p>Havi részlet: ${fmt(r.inst)}</p>`:''}${full?`<p>Kölcsönadva: ${fmtD(rcDate(r.date))}</p>`:''}<div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;align-items:center">${rem>0?`<button class="btn" data-a="rcback" data-v="${r.id}">Visszakaptam</button>`:''}${full&&rem>0?`<button class="link" data-a="rcclose" data-v="${r.id}">Lezárás</button>`:''}</div>${hist}</div>`;
+}
+const rcHome=()=>{const a=S.recv.filter(r=>rcRem(r)>0);return a.length?'<h2>Kintlévőség</h2>'+a.map(r=>rcCard(r,false)).join(''):''};
+function vRecv(){return (S.recv.length?S.recv.map(r=>rcCard(r,true)).join(''):'<div class="empty">Még nincs kintlévőség.</div>')+'<button class="btn" data-a="rcnew" style="width:100%;margin-top:6px">Új kintlévőség</button>'}
+function rcForm(id){
+  const r=id?S.recv.find(x=>x.id===id):null;rcId=id||null;rp={acc:'cash'};
+  const lb='display:block;color:var(--mut);font-size:13px;margin-top:8px',el=$('#cf');
+  el.innerHTML=`<div class="cbox" role="dialog"><p style="font-weight:700">${r?'Kintlévőség szerkesztése':'Új kintlévőség'}</p><label style="${lb}">Kinek adtad kölcsön?<input id="rc-n" value="${esc(r?r.name:'')}" placeholder="Pl. Péter"></label>${r?'':`<label style="${lb}">Kölcsönadott összeg (Ft)<input id="rc-t" type="number" inputmode="numeric"></label><div style="${lb}">Honnan adtad?</div><div class="seg" style="margin:4px 0 0"><button data-a="rpacc" data-v="cash" class="on">Készpénz</button><button data-a="rpacc" data-v="card">Bankkártya</button></div><label style="${lb}">Kölcsönadás dátuma<input id="rc-d" type="date" value="${isoD(now)}"></label>`}<label style="${lb}">Visszafizetési határidő (nem kötelező)<input id="rc-u" type="date" value="${r&&r.due?r.due:''}"></label><label style="${lb}">Havi részlet (nem kötelező)<input id="rc-i" type="number" inputmode="numeric" value="${r&&r.inst?r.inst:''}"></label><p id="rc-err" style="margin:8px 0 0;color:var(--out)"></p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="rcsave">Mentés</button></div></div>`;
+  el.hidden=false;
+}
+function rcBackForm(id){
+  const r=S.recv.find(x=>x.id===id);if(!r)return;
+  rp={acc:'cash',id};const el=$('#cf'),rem=rcRem(r);
+  el.innerHTML=`<div class="cbox" role="dialog"><p style="font-weight:700">Visszatérítés: ${esc(r.name)}</p><div style="display:block;color:var(--mut);font-size:13px">Hova érkezett?</div><div class="seg" style="margin:4px 0 0"><button data-a="rpacc" data-v="cash" class="on">Készpénz</button><button data-a="rpacc" data-v="card">Bankkártya</button></div><label style="display:block;color:var(--mut);font-size:13px;margin-top:10px">Összeg (Ft)<input id="rb-a" type="number" inputmode="numeric" value="${Math.round(r.inst>0?Math.min(r.inst,rem):rem)}"></label><p id="rb-err" style="margin:8px 0 0;color:var(--out)"></p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="rcbackok">Visszatérítés rögzítése</button></div></div>`;
+  el.hidden=false;
+}
+
+let toastT=null,toastFn=null;
+function toast(msg,undo){const el=$('#toast');toastFn=undo||null;el.innerHTML='<span>'+esc(msg)+'</span>'+(undo?'<button data-a="toastundo">Visszavonás</button>':'');el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{el.hidden=true;toastFn=null},6500)}
+function undelTx(ids){ids.forEach(id=>{const r=S.trash.find(x=>x.id===id);if(r){S.trash=S.trash.filter(x=>x.id!==id);const c=Object.assign({},r);delete c.deletedAt;S.tx.push(c)}});save();render()}
+function prefillItem(){if(f.id||f.type!=='out'||!f.item||f.item==='__new'||f.amt)return;const l=S.tx.filter(t=>t.type==='out'&&t.cat===f.cat&&t.item===f.item&&!t.sg&&!t.ln).sort((a,b)=>b.date.localeCompare(a.date))[0];if(l){f.amt=l.amt;f.acc=l.acc}}
+function quickRow(){
+  const ls=isoD(new Date(now.getTime()-120*864e5)),m={};
+  S.tx.filter(t=>t.type==='out'&&t.date>=ls&&t.cat&&t.cat!=='sav'&&t.cat!=='loan'&&!t.sg&&!t.ln&&!t.rc&&S.cats.some(c=>c.id===t.cat)).forEach(t=>{const k=[t.cat,t.item||'',t.acc,t.amt].join('|');m[k]=(m[k]||0)+1});
+  const l=Object.entries(m).filter(e=>e[1]>=2).sort((a,b)=>b[1]-a[1]).slice(0,6).map(e=>e[0]);
+  if(!l.length)return '';
+  return '<h2>Gyors kiadás</h2><div>'+l.map(k=>{const p=k.split('|');return `<button class="qk" data-a="quick" data-v="${esc(k)}">${esc(itemN(p[0],p[1])||catN(p[0]))} · ${fmt(+p[3])}</button>`}).join('')+'</div>';
+}
+const te=new TextEncoder(),td=new TextDecoder();
+const toB64=b=>{const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)};
+const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function kdf(pw,salt,it){const k=await crypto.subtle.importKey('raw',te.encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:it,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function encText(txt,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),it=200000,key=await kdf(pw,salt,it);const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(txt));return JSON.stringify({kv:'enc1',kdf:'pbkdf2-sha256',iter:it,salt:toB64(salt),iv:toB64(iv),data:toB64(ct)})}
+async function decText(o,pw){const key=await kdf(pw,fromB64(o.salt),o.iter||200000);return td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(o.iv)},key,fromB64(o.data)))}
+let pwFn=null;
+function pwAsk(msg,conf,fn){pwFn=fn;const el=$('#cf');el.innerHTML=`<div class="cbox" role="dialog"><p>${msg}</p><input id="pw1" type="password" autocomplete="off" placeholder="Jelszó">${conf?'<input id="pw2" type="password" autocomplete="off" placeholder="Jelszó megerősítése" style="margin-top:8px">':''}<p id="pwerr" style="margin:8px 0 0;color:var(--out)"></p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="pwok" data-v="${conf?1:0}">OK</button></div></div>`;el.hidden=false}
+const SNAPK='kv_auto';
+function snapList(){try{return JSON.parse(localStorage.getItem(SNAPK)||'[]')}catch(e){return[]}}
+function dataJson(){return JSON.stringify(Object.assign({},S,{pin:'',bio:undefined,pinFail:undefined}))}
+function snapNow(label){
+  if(!(S.tx.length||S.recv.length||S.loans.length||S.sg.length||S.cats.length))return;
+  const d=isoD(now),l=snapList().filter(x=>!(x.d===d&&x.l===(label||'')));
+  try{l.push({d,l:label||'',t:Date.now(),j:dataJson()});
+    const auto=l.filter(x=>!x.l).slice(-7),sp=l.filter(x=>x.l).slice(-3);
+    localStorage.setItem(SNAPK,JSON.stringify(auto.concat(sp).sort((a,b)=>a.t-b.t)))}catch(e){}
+}
+function snapUi(){
+  const l=snapList().slice().reverse();
+  return '<h2>Automatikus mentések</h2><div class="cat"><p style="margin:0 0 6px;color:var(--mut);font-size:13px">A készülék naponta elmenti az adataid másolatát (az utolsó 7 napot). Ez véletlen törlés vagy hiba ellen véd, készülék elvesztése ellen nem, ahhoz használd a fájlmentést.</p>'+(l.length?l.map(x=>`<div style="display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:6px"><span>${x.d.split('-').join('. ')}.${x.l?' ('+esc(x.l)+')':''}</span><button class="link" data-a="snaprest" data-v="${x.t}">Visszaállítás</button></div>`).join(''):'<p style="margin:0;color:var(--mut)">Még nincs automatikus mentés.</p>')+(l.length?'<button class="link" data-a="snapclear" style="margin-top:10px;color:var(--out)">Automatikus mentések törlése</button>':'')+'</div>';
+}
+function applyImport(o){snapNow('Visszatöltés előtt');const k={pin:S.pin,bio:S.bio,lang:S.lang,theme:S.theme,fs:S.fs,lastBackup:S.lastBackup,firstUse:S.firstUse,pinFail:S.pinFail};S=o;Object.keys(k).forEach(x=>{if(k[x]!==undefined)S[x]=k[x]});S.pin=S.pin||'';S.sgl=S.sgl||[];S.trash=S.trash||[];S.rec=S.rec||[];S.open=S.open||{cash:0,card:0};S.goalM=S.goalM||{};S.sg=S.sg||[];S.icats=S.icats||[];S.loans=S.loans||[];S.recv=S.recv||[];save();render()}
+function importText(tx){
+  let o=null;try{o=JSON.parse(tx)}catch(x){}
+  if(o&&o.kv==='enc1'){pwAsk('Add meg a jelszót a titkosított mentés megnyitásához.',false,async pw=>{let p=null;try{p=JSON.parse(await decText(o,pw))}catch(x){}
+    if(!p||!Array.isArray(p.cats)||!Array.isArray(p.tx))ask('Hibás jelszó vagy sérült fájl.',null,1);else ask('Biztosan visszatöltöd a mentést? A jelenlegi adatok felülíródnak.',()=>applyImport(p))});return}
+  if(!o||!Array.isArray(o.cats)||!Array.isArray(o.tx))ask('A beillesztett szöveg nem érvényes mentés.',null,1);
+  else ask('Biztosan visszatöltöd a mentést? A jelenlegi adatok felülíródnak.',()=>applyImport(o));
+}
+async function shareBlob(blob,name,mark){
+  try{const f=new File([blob],name,{type:blob.type});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Költségvetés'});if(mark){S.lastBackup=isoD(now);save();render()}return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  if(mark){S.lastBackup=isoD(now);save();render()}
+}
+async function saveFile(){await shareBlob(new Blob([dataJson()],{type:'application/json'}),'koltsegvetes-mentes-'+isoD(now)+'.json',true)}
+async function saveEnc(pw){await shareBlob(new Blob([await encText(dataJson(),pw)],{type:'application/json'}),'koltsegvetes-titkositott-'+isoD(now)+'.json',true)}
+// ---- jelentések ----
+const LT=s=>LANG==='en'?(EN_D[s]||s):s;
+const TYL={in:'Bevétel',out:'Kiadás',tr:'Átvezetés',lend:'Kölcsönadás',back:'Visszakapott'};
+function rptData(kind){
+  const y=kind==='year'?yv:cur.y,pre=kind==='year'?String(y):mpre();
+  const tx=S.tx.filter(t=>t.date.startsWith(pre)).sort((a,b)=>a.date.localeCompare(b.date));
+  const ins=tx.filter(t=>t.type==='in'),outs=tx.filter(t=>t.type==='out'),sum=l=>l.reduce((s,t)=>s+t.amt,0);
+  const grp=(l,nf)=>{const m={};l.forEach(t=>{const k=nf(t)||'—';m[k]=(m[k]||0)+t.amt});return Object.entries(m).sort((a,b)=>b[1]-a[1])};
+  const months=[];if(kind==='year')for(let m=0;m<12;m++){const k=y+'-'+pad(m+1),l=tx.filter(t=>t.date.startsWith(k)),i=sum(l.filter(t=>t.type==='in')),o=sum(l.filter(t=>t.type==='out'));months.push([MN[m],i,o,i-o])}
+  return {kind,title:kind==='year'?String(y):fmtM(pre),tx,inc:sum(ins),exp:sum(outs),net:sum(ins)-sum(outs),byOut:grp(outs,t=>LT(catN(t.cat))),byIn:grp(ins,t=>icN(t.cat)||LT('Bevétel')),months};
+}
+function rptHtml(d){
+  const n=v=>`<td class="n">${fmt(v)}</td>`;
+  let o=`<h1>${esc(LT('Költségvetés'))} – ${esc(d.title)}</h1><table><tr><td>${LT('Bevétel')}</td>${n(d.inc)}</tr><tr><td>${LT('Kiadás')}</td>${n(d.exp)}</tr><tr><td><b>${LT('Megtakarítás')}</b></td>${n(d.net)}</tr></table>`;
+  if(d.kind==='year')o+=`<h2>${LT('Hónap')}</h2><table><tr><th>${LT('Hónap')}</th><th class="n">${LT('Bevétel')}</th><th class="n">${LT('Kiadás')}</th><th class="n">${LT('Megtakarítás')}</th></tr>${d.months.map(r=>`<tr><td>${esc(r[0])}</td>${n(r[1])}${n(r[2])}${n(r[3])}</tr>`).join('')}<tr><td><b>${LT('Összesen')}</b></td>${n(d.inc)}${n(d.exp)}${n(d.net)}</tr></table>`;
+  const cat=(t,l,tot)=>l.length?`<h2>${LT(t)}</h2><table>${l.map(e=>`<tr><td>${esc(e[0])}</td>${n(e[1])}<td class="n">${tot?Math.round(e[1]/tot*100):0}%</td></tr>`).join('')}</table>`:'';
+  o+=cat('Kiadások kategóriánként',d.byOut,d.exp)+cat('Bevételek kategóriánként',d.byIn,d.inc);
+  o+=`<h2>${LT('Tételek')}</h2><table><tr><th>${LT('Dátum')}</th><th>${LT('Típus')}</th><th>${LT('Tétel')}</th><th>${LT('Számla')}</th><th class="n">${LT('Összeg')}</th></tr>${d.tx.map(t=>`<tr><td>${t.date.split('-').join('. ')}.</td><td>${LT(TYL[t.type]||'')}</td><td>${esc(LT(title(t)))}${t.note?' – '+esc(t.note):''}</td><td>${LT(t.type==='tr'?accN(t.acc)+' → '+accN(t.to):accN(t.acc))}</td>${n(t.amt)}</tr>`).join('')}</table>`;
+  return o;
+}
+const crcT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=crcT[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
+function zipStore(files){
+  const chunks=[],cd=[],u16=v=>[v&255,(v>>8)&255],u32=v=>[v&255,(v>>8)&255,(v>>16)&255,(v>>>24)&255];let off=0;
+  files.forEach(f=>{const nb=te.encode(f.n),crc=crc32(f.d);
+    const lh=Uint8Array.from([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(f.d.length),...u32(f.d.length),...u16(nb.length),...u16(0)]);
+    chunks.push(lh,nb,f.d);cd.push({nb,crc,len:f.d.length,off});off+=lh.length+nb.length+f.d.length});
+  let cs=0;const cds=[];
+  cd.forEach(e=>{const x=Uint8Array.from([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(e.crc),...u32(e.len),...u32(e.len),...u16(e.nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(e.off)]);cds.push(x,e.nb);cs+=x.length+e.nb.length});
+  const end=Uint8Array.from([0x50,0x4b,5,6,...u16(0),...u16(0),...u16(cd.length),...u16(cd.length),...u32(cs),...u32(off),...u16(0)]);
+  return new Blob([...chunks,...cds,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+const colL=i=>{let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+const xe=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'');
+function sheetXml(rows,widths){
+  const cols=widths?'<cols>'+widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>':'';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+cols+'<sheetData>'+rows.map((r,ri)=>`<row r="${ri+1}">`+r.map((c,ci)=>{if(c===null||c===undefined||c==='')return '';const ref=colL(ci)+(ri+1),b=(c&&c.b)?' s="1"':'',v=(c&&typeof c==='object')?c.v:c;return typeof v==='number'?`<c r="${ref}"${b}><v>${v}</v></c>`:`<c r="${ref}"${b} t="inlineStr"><is><t xml:space="preserve">${xe(v)}</t></is></c>`}).join('')+'</row>').join('')+'</sheetData></worksheet>';
+}
+function rptXlsx(d){
+  const B=v=>({v,b:1}),r=[[B(LT('Költségvetés')+' – '+d.title)],[],[B(LT('Bevétel')),d.inc],[B(LT('Kiadás')),d.exp],[B(LT('Megtakarítás')),d.net],[]];
+  if(d.kind==='year'){r.push([B(LT('Hónap')),B(LT('Bevétel')),B(LT('Kiadás')),B(LT('Megtakarítás'))]);d.months.forEach(m=>r.push(m));r.push([B(LT('Összesen')),d.inc,d.exp,d.net],[])}
+  const cat=(t,l,tot)=>{if(!l.length)return;r.push([B(LT(t))],[B(LT('Kategória')||'Kategória'),B(LT('Összeg')),B(LT('Arány'))]);l.forEach(e=>r.push([e[0],e[1],tot?Math.round(e[1]/tot*1000)/10+'%':'']));r.push([])};
+  cat('Kiadások kategóriánként',d.byOut,d.exp);cat('Bevételek kategóriánként',d.byIn,d.inc);
+  const t=[[B(LT('Dátum')),B(LT('Típus')),B(LT('Tétel')),B(LT('Megjegyzés')),B(LT('Számla')),B(LT('Összeg'))]];
+  d.tx.forEach(x=>t.push([x.date,LT(TYL[x.type]||''),LT(title(x)),x.note||'',LT(x.type==='tr'?accN(x.acc)+' → '+accN(x.to):accN(x.acc)),x.type==='in'||x.type==='back'||x.type==='tr'?x.amt:-x.amt]));
+  const s1=LT('Összesítő'),s2=LT('Tételek');
+  const files=[
+    {n:'[Content_Types].xml',d:te.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>')},
+    {n:'_rels/.rels',d:te.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')},
+    {n:'xl/workbook.xml',d:te.encode(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${xe(s1)}" sheetId="1" r:id="rId1"/><sheet name="${xe(s2)}" sheetId="2" r:id="rId2"/></sheets></workbook>`)},
+    {n:'xl/_rels/workbook.xml.rels',d:te.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>')},
+    {n:'xl/styles.xml',d:te.encode('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>')},
+    {n:'xl/worksheets/sheet1.xml',d:te.encode(sheetXml(r,[34,16,16,16]))},
+    {n:'xl/worksheets/sheet2.xml',d:te.encode(sheetXml(t,[12,14,34,28,22,14]))}
+  ];
+  return zipStore(files);
+}
+function rptBtns(k){return `<div class="add" style="margin-bottom:10px"><button class="btn" data-a="rptpdf" data-v="${k}">PDF</button><button class="btn" data-a="rptxls" data-v="${k}">Excel</button></div>`}
+function bkNotice(){
+  const today=isoD(now);
+  if(!(S.tx.length||S.recv.length||S.loans.length||S.sg.length))return '';
+  if(S.bkSnooze&&S.bkSnooze>today)return '';
+  const has=!!S.lastBackup,days=has?dBetween(S.lastBackup,today):dBetween(S.firstUse||today,today);
+  if(has?days<30:days<7)return '';
+  return `<div class="goal" style="border-left-color:var(--cash)"><b>Mentés ajánlott</b><p>${has?'Utolsó mentés: '+days+' napja.':'Még nem készítettél mentést.'}</p><p>Az adataid csak ezen a készüléken vannak, készíts mentést.</p><div style="display:flex;gap:14px;margin-top:8px;align-items:center"><button class="btn" data-a="tab" data-v="cats">Mentés készítése</button><button class="link" data-a="bksnooze">Később</button></div></div>`;
+}
+function upcoming(){
+  const tdy=new Date(now.getFullYear(),now.getMonth(),now.getDate()),end=new Date(tdy.getFullYear(),tdy.getMonth()+1,0),lim=new Date(tdy.getTime()+14*864e5);
+  const it=[];let ob=0;
+  S.rec.forEach(r=>{if(r.type==='tr')return;const d=nextDueD(r),sg=r.type==='in'?1:-1;if(d<=lim)it.push({d,n:recNm(r),a:sg*r.amt});if(sg<0&&d<=end)ob+=r.amt});
+  S.loans.forEach(l=>{const s=lnState(l);if(s.rem<=0)return;const one=Math.min(l.pay,s.rem);
+    if(!s.done){const d=lnDueD(l);if(d<=lim||s.curOver)it.push({d,n:'Hitel: '+l.name,a:-one});ob+=one}
+    else{const nx=lnNextD(l);if(nx&&nx<=lim)it.push({d:nx,n:'Hitel: '+l.name,a:-one})}
+    ob+=s.missed.length*l.pay});
+  S.recv.forEach(r=>{if(rcRem(r)>0&&r.due){const d=rcDate(r.due);if(d<=lim)it.push({d,n:'Visszafizetési határidő: '+r.name,a:rcRem(r)})}});
+  if(!it.length&&!ob)return '';
+  it.sort((a,b)=>a.d-b.d);
+  let h='<h2>Közelgő fizetések</h2>'+it.map(x=>`<div class="row" style="cursor:default"><span class="rt"><b>${esc(x.n)}</b><small>${fmtD(x.d)}</small></span><span class="am ${x.a<0?'out':'in'}">${x.a<0?'−':'+'}${fmt(Math.abs(x.a))}</span></div>`).join('');
+  if(ob>0)h+=`<p style="margin:6px 4px 0;color:var(--mut)">Várható kötelezettségek a hónap végéig: ${fmt(ob)}</p><p style="margin:2px 4px 0;font-weight:700">Becsült összes pénz a hónap végén: ${fmt(bal(null)-ob)}</p><p style="margin:2px 4px 0;color:var(--mut);font-size:13px">A kintlévőségek visszafizetése nincs beleszámítva.</p>`;
+  return h;
+}
 function recSection(){
   const tdy=new Date(now.getFullYear(),now.getMonth(),now.getDate());const r=S.rec.map(x=>{const soon=Math.round((nextDueD(x)-tdy)/864e5)<=3;return `<div class="row" style="cursor:default"><span class="rt"><b>${esc(x.type==='tr'?'Átvezetés':x.type==='in'?(icN(x.cat)||'Bevétel'):(itemN(x.cat,x.item)||catN(x.cat)||'Kiadás'))}</b><small${soon?' style="color:var(--out);font-weight:500"':''}>Minden hónap ${x.day}. napján, következő: ${nextDue(x)}</small>${x.note?`<i>${esc(x.note)}</i>`:''}</span><span class="am ${x.type}">${fmt(x.amt)}</span><span style="display:flex;flex-direction:column;gap:6px"><button class="link" data-a="recedit" data-v="${x.id}">Szerkesztés</button><button class="link" data-a="recdel" data-v="${x.id}">Törlés</button></span></div>`}).join('')||'<div class="empty" style="padding:10px 0">Nincs rendszeres kifizetés. Új tételnél jelöld be a „Rendszeres kifizetés (havonta)” négyzetet.</div>';
   return `<h2>Rendszeres kifizetések</h2>${r}`;
 }
 function settings(){
   const ta='width:100%;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px';
-  return `<h2>Kezdő egyenleg</h2><div class="cat"><div class="add"><input id="oc" type="number" inputmode="numeric" placeholder="Készpénz" value="${S.open.cash||''}"><input id="ok" type="number" inputmode="numeric" placeholder="Bankkártya" value="${S.open.card||''}"></div><div class="add"><button class="btn" data-a="opensave">Kezdő egyenleg mentése</button></div></div><h2>Mentés és exportálás</h2><div class="cat"><div class="add" style="flex-wrap:wrap"><button class="btn" data-a="expj">Mentés szövegként</button><button class="btn" data-a="expc">CSV</button><button class="btn" data-a="expcopy">Kijelölés és másolás</button></div><textarea id="bx" rows="5" style="${ta}" placeholder="Itt jelenik meg a mentés. Visszatöltéshez illeszd be ide a korábbi mentést."></textarea><div class="add"><button class="btn" data-a="imp">Visszatöltés a szövegből</button></div></div><h2>Zárolás</h2><div class="cat">${S.pin?'<div class="add"><button class="btn" data-a="pinset">PIN módosítása</button><button class="btn" data-a="pindel" style="background:var(--mut)">PIN törlése</button></div>':'<div class="add"><button class="btn" data-a="pinset">PIN beállítása</button></div>'}<p style="margin:8px 0 0;color:var(--mut);font-size:13px">4 számjegyű PIN, az app megnyitásakor kéri. Az ujjlenyomatos feloldás csak az Android alkalmazásban érhető el. A PIN nem titkosítja az adataidat, csak az app megnyitását védi.</p></div><h2>Megjelenés</h2><div class="seg"><button data-a="theme" data-v="system" class="${(S.theme||'system')==='system'?'on':''}">Rendszer</button><button data-a="theme" data-v="light" class="${S.theme==='light'?'on':''}">Világos</button><button data-a="theme" data-v="dark" class="${S.theme==='dark'?'on':''}">Sötét</button></div><h2>Bemutató</h2><div class="cat"><button class="btn" data-a="tutopen">Bemutató megnyitása</button></div><h2>Fizetési emlékeztető</h2><div class="cat"><div class="seg" style="margin:0;font-size:13px">${[[-1,'Ki'],[0,'Aznap'],[1,'1 nap előtte'],[3,'3 nap előtte']].map(o=>`<button data-a="payrem" data-v="${o[0]}" class="${prv()===o[0]?'on':''}">${o[1]}</button>`).join('')}</div><p style="margin:8px 0 0;color:var(--mut);font-size:13px">Az értesítést az Android alkalmazás küldi a rendszeres kifizetések előtt. Ezen az oldalon az Áttekintésen pirossal jelöljük a 3 napon belül esedékeset.</p></div><h2>Napi emlékeztető</h2><div class="cat"><p style="margin:0;color:var(--mut)">Az emlékeztető csak az Android alkalmazásban működik, a webes változat nem tud értesítést küldeni.</p></div>`;
+  return `<h2>Kezdő egyenleg</h2><div class="cat"><div class="add"><input id="oc" type="number" inputmode="numeric" placeholder="Készpénz" value="${S.open.cash||''}"><input id="ok" type="number" inputmode="numeric" placeholder="Bankkártya" value="${S.open.card||''}"></div><div class="add"><button class="btn" data-a="opensave">Kezdő egyenleg mentése</button></div></div><h2>Mentés és exportálás</h2><div class="cat"><div class="add" style="flex-wrap:wrap"><button class="btn" data-a="expj">Mentés szövegként</button><button class="btn" data-a="expc">CSV</button><button class="btn" data-a="expcopy">Kijelölés és másolás</button><button class="btn" data-a="expfile">Mentés fájlként</button><button class="btn" data-a="expenc">Titkosított mentés</button><button class="btn" data-a="impfile">Visszatöltés fájlból</button></div><textarea id="bx" rows="5" style="${ta}" placeholder="Itt jelenik meg a mentés. Visszatöltéshez illeszd be ide a korábbi mentést."></textarea><div class="add"><button class="btn" data-a="imp">Visszatöltés a szövegből</button></div></div>${snapUi()}<h2>Zárolás</h2><div class="cat">${S.pin?'<div class="add"><button class="btn" data-a="pinset">PIN módosítása</button><button class="btn" data-a="pindel" style="background:var(--mut)">PIN törlése</button></div>':'<div class="add"><button class="btn" data-a="pinset">PIN beállítása</button></div>'}${bioUi()}<p style="margin:8px 0 0;color:var(--mut);font-size:13px">4 számjegyű PIN, az app megnyitásakor kéri. A PIN nem titkosítja az adataidat, csak az app megnyitását védi.</p></div><h2>Nyelv</h2><div class="seg"><button data-a="setlang" data-v="hu" class="${LANG==='hu'?'on':''}">Magyar</button><button data-a="setlang" data-v="en" class="${LANG==='en'?'on':''}">English</button></div><h2>Betűméret</h2><div class="seg">${[['1','Normál'],['1.15','Nagy'],['1.3','Nagyobb']].map(x=>`<button data-a="fs" data-v="${x[0]}" class="${String(S.fs||1)===x[0]?'on':''}">${x[1]}</button>`).join('')}</div><h2>Megjelenés</h2><div class="seg"><button data-a="theme" data-v="system" class="${(S.theme||'system')==='system'?'on':''}">Rendszer</button><button data-a="theme" data-v="light" class="${S.theme==='light'?'on':''}">Világos</button><button data-a="theme" data-v="dark" class="${S.theme==='dark'?'on':''}">Sötét</button></div><h2>Adatok törlése</h2><div class="cat"><button class="btn" data-a="wipe" style="background:var(--out)">Minden adat törlése</button><p style="margin:8px 0 0;color:var(--mut);font-size:13px">Letörli a tételeket, kategóriákat, célokat és kezdő egyenleget, az app üresen indul újra. A PIN és a megjelenés megmarad. Előbb készíts mentést.</p></div><h2>Bemutató</h2><div class="cat"><button class="btn" data-a="tutopen">Bemutató megnyitása</button></div><h2>Fizetési emlékeztető</h2><div class="cat"><div class="seg" style="margin:0;font-size:13px">${[[-1,'Ki'],[0,'Aznap'],[1,'1 nap előtte'],[3,'3 nap előtte']].map(o=>`<button data-a="payrem" data-v="${o[0]}" class="${prv()===o[0]?'on':''}">${o[1]}</button>`).join('')}</div><p style="margin:8px 0 0;color:var(--mut);font-size:13px">Az értesítést az Android alkalmazás küldi a rendszeres kifizetések előtt. Ezen az oldalon az Áttekintésen pirossal jelöljük a 3 napon belül esedékeset.</p></div><h2>Napi emlékeztető</h2><div class="cat"><p style="margin:0;color:var(--mut)">Az emlékeztető csak az Android alkalmazásban működik, a webes változat nem tud értesítést küldeni.</p></div>`;
 }
 function incomeCats(){return `<h2>Bevételi kategóriák</h2><div class="cat">${S.icats.map(c=>`<span class="chip"><button data-a="icren" data-v="${c.id}" style="width:auto;height:auto;color:var(--ink)">${esc(c.name)}</button><button data-a="icdel" data-v="${c.id}" aria-label="${esc(c.name)} törlése">×</button></span>`).join('')||'<div class="empty" style="padding:10px 0">Még nincs bevételi kategória.</div>'}<div class="add"><input id="nic" placeholder="Pl. Prémium"><button class="btn" data-a="icadd">Hozzáad</button></div></div>`}
 function vCatEd(){
@@ -344,11 +618,11 @@ function vCats(){
   if(S.sample)h+=`<p style="text-align:center"><button class="link" data-a="clear">Minta tételek törlése</button></p>`;
   return h;
 }
-function render(){migSgl();syncSg();applyTheme();
+function render(){document.documentElement.style.zoom=S.fs||1;S.loans=S.loans||[];S.recv=S.recv||[];if(!S.firstUse)S.firstUse=isoD(now);migSgl();syncSg();applyTheme();updWarn();
   $('#mt').textContent=MN[cur.m]+' '+cur.y;
-  $('#v').innerHTML=({home:vHome,in:vList,out:vList,tr:vTr,sg:sgSection,catm:vCatEd,year:vYear,cal:vCal,stat:vStat,cats:vCats})[tab]();
+  $('#v').innerHTML=({home:vHome,in:vList,out:vList,tr:vTr,sg:sgSection,loan:vLoan,recv:vRecv,catm:vCatEd,year:vYear,cal:vCal,stat:vStat,cats:vCats})[tab]();
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));document.getElementById('gear').classList.toggle('on',tab==='cats');document.getElementById('burger').classList.toggle('on',tab!=='in'&&tab!=='out'&&tab!=='cats');document.querySelectorAll('#dr button').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));
-  const fb=document.querySelector('.fab');fb.hidden=tab==='cats'||tab==='year'||tab==='sg'||tab==='stat'||tab==='catm';fb.textContent=(tab==='home'||tab==='tr')?'+ Számlák közötti átvezetés':tab==='in'?'+ Új bevétel':tab==='out'?'+ Új kiadás':'+ Új tétel';
+  const fb=document.querySelector('.fab');fb.hidden=tab==='cats'||tab==='year'||tab==='sg'||tab==='stat'||tab==='catm'||tab==='loan'||tab==='recv';fb.textContent=(tab==='home'||tab==='tr')?'+ Számlák közötti átvezetés':tab==='in'?'+ Új bevétel':tab==='out'?'+ Új kiadás':'+ Új tétel';
 }
 function sheet(){
   const el=$('#sh');if(!f){el.hidden=true;return}
@@ -380,7 +654,7 @@ function doSave(){
   if((f.type==='out'||f.type==='tr')&&!f.ok){const keep=S.tx;S.tx=keep.filter(t=>t.id!==f.id);const av=bal(f.acc);S.tx=keep;if(av<amt){ask('Nincs elég fedezet ('+accN(f.acc)+'): elérhető '+fmt(Math.max(av,0))+', a tétel összege '+fmt(amt)+'. Biztosan rögzíted?',()=>{f.ok=true;doSave()});return}}
   let cat='',item='';
   if(f.type==='out'){
-    cat=f.cat;if(!cat){f.err='Előbb hozz létre egy kategóriát a Kategóriák fülön.';sheet();return}
+    cat=f.cat;if(!cat){f.err='Előbb hozz létre egy kategóriát a Kategóriák menüben (☰).';sheet();return}
     item=f.item;
     if(item==='__new'){
       const nm=(f.nn||'').trim(),k=S.cats.find(c=>c.id===cat);
@@ -404,14 +678,14 @@ document.addEventListener('click',e=>{
   else if(a==='menuclose'){$('#dr').hidden=true}
   else if(a==='add')openSheet(null,tab==='cal'?sel:null,(tab==='home'||tab==='tr')?'tr':(tab==='in'?'in':'out'),tab==='in'||tab==='out');
   else if(a==='addday')openSheet(null,sel);
-  else if(a==='edit'){const tt=S.tx.find(x=>x.id===v);if(tt&&tt.sg)ask('Ez a(z) '+esc(title(tt))+' megtakarítási befizetés. A Megtakarítási célok oldalon tudsz befizetni vagy kivenni.',null,1);else openSheet(v,null,null,tab==='in'||tab==='out')}
+  else if(a==='edit'){const tt=S.tx.find(x=>x.id===v);if(tt&&tt.rc)ask('Ez egy kölcsönadáshoz tartozó mozgás. A Kintlévőség oldalon kezelheted.',null,1);else if(tt&&tt.ln)ask('Ez egy hitel törlesztése. A Hitel oldalon vonhatod vissza.',null,1);else if(tt&&tt.sg)ask('Ez a(z) '+esc(title(tt))+' megtakarítási befizetés. A Megtakarítási célok oldalon tudsz befizetni vagy kivenni.',null,1);else openSheet(v,null,null,tab==='in'||tab==='out')}
   else if(a==='day'){sel=v;render()}
   else if(a==='type'||a==='acc'){sync();f[a==='type'?'type':'acc']=v;if(a==='type'){f.cat=v==='in'?'':((S.cats[0]||{}).id||'');f.item=''}sheet()}
   else if(a==='close'){f=null;sheet()}
   else if(a==='selmode'){smode=!smode;sset=new Set();render()}
   else if(a==='selone'){if(sset.has(v))sset.delete(v);else sset.add(v);render()}
   else if(a==='selall'){vis.forEach(id=>sset.add(id));render()}
-  else if(a==='seldel'){if(sset.size)ask('Biztosan törlöd a kijelölt '+sset.size+' tételt? A Törölt tételek között megtalálod.',()=>{S.tx.filter(t=>sset.has(t.id)).forEach(t=>S.trash.push(Object.assign({},t,{deletedAt:Date.now()})));S.tx=S.tx.filter(t=>!sset.has(t.id));sset=new Set();smode=false;save();render()})}
+  else if(a==='seldel'){if(sset.size){const ids=[...sset];S.tx.filter(t=>sset.has(t.id)).forEach(t=>S.trash.push(Object.assign({},t,{deletedAt:Date.now()})));S.tx=S.tx.filter(t=>!sset.has(t.id));sset=new Set();smode=false;save();render();toast(ids.length+' tétel törölve.',()=>undelTx(ids))}}
   else if(a==='catren'){const c=S.cats.find(x=>x.id===v);if(c)inp('Kategória új neve',c.name,n=>{c.name=n;save();render()})}
   else if(a==='itemren'){const p=v.split('|'),c=S.cats.find(x=>x.id===p[0]),it=c&&c.items.find(x=>x.id===p[1]);if(it)inp('Tétel új neve',it.name,n=>{it.name=n;save();render()})}
   else if(a==='icren'){const c=S.icats.find(x=>x.id===v);if(c)inp('Bevételi kategória új neve',c.name,n=>{c.name=n;save();render()})}
@@ -419,13 +693,69 @@ document.addEventListener('click',e=>{
   else if(a==='theme'){S.theme=v;save();render()}
   else if(a==='pinset'){const setNew=()=>inp('Új PIN (4 számjegy)','',n1=>{if(!/^\d{4}$/.test(n1)){ask('A PIN pontosan 4 számjegy legyen.',null,1);return}inp('PIN megerősítése','',n2=>{if(n2!==n1){ask('A két PIN nem egyezik.',null,1);return}S.pin=hp(n1);save();render();ask('A PIN beállítva. Az app megnyitásakor kérni fogja.',null,1)},'password')},'password');
     if(S.pin)inp('Add meg a jelenlegi PIN-t','',c=>{if(hp(c)===S.pin)setNew();else ask('Hibás PIN.',null,1)},'password');else setNew()}
-  else if(a==='pindel'){inp('Add meg a PIN-t a törléshez','',c=>{if(hp(c)===S.pin){S.pin='';save();render()}else ask('Hibás PIN.',null,1)},'password')}
-  else if(a==='lkd'){if(lkIn.length<4)lkIn+=v;if(lkIn.length===4){if(hp(lkIn)===S.pin){$('#lk').hidden=true;lkIn='';if(!S.tutDone)tutShow()}else{lkIn='';lockShow('Hibás PIN')}}else lockShow()}
+  else if(a==='pindel'){inp('Add meg a PIN-t a törléshez','',c=>{if(hp(c)===S.pin){S.pin='';S.bio='';save();render()}else ask('Hibás PIN.',null,1)},'password')}
+  else if(a==='lkd'){const f=S.pinFail||(S.pinFail={n:0,until:0});if(Date.now()<f.until)return;if(lkIn.length<4)lkIn+=v;if(lkIn.length===4){if(hp(lkIn)===S.pin){$('#lk').hidden=true;lkIn='';S.pinFail={n:0,until:0};save();startFlow()}else{lkIn='';f.n++;if(f.n%5===0)f.until=Date.now()+Math.min(900,30*Math.pow(2,f.n/5-1))*1000;save();lockShow('Hibás PIN')}}else lockShow()}
+  else if(a==='toastundo'){const fn=toastFn;toastFn=null;$('#toast').hidden=true;if(fn)fn()}
+  else if(a==='quick'){const p=v.split('|'),amt=parseFloat(p[3]),acc=p[2];
+    const go=()=>{const id=uid();S.tx.push({id,type:'out',acc,to:'',amt,cat:p[0],item:p[1],date:isoD(now),note:''});save();render();toast('Rögzítve: '+(itemN(p[0],p[1])||catN(p[0]))+' '+fmt(amt),()=>{S.tx=S.tx.filter(t=>t.id!==id);save();render()})};
+    if(bal(acc)<amt)ask('Nincs elég fedezet ('+accN(acc)+'): elérhető '+fmt(Math.max(bal(acc),0))+', a tétel összege '+fmt(amt)+'. Biztosan rögzíted?',go);else go()}
+  else if(a==='expenc'){pwAsk('Adj meg egy jelszót a mentés titkosításához. Ha elfelejted, a mentés nem állítható vissza!',true,pw=>saveEnc(pw))}
+  else if(a==='pwok'){const p1=$('#pw1').value;if(v==='1'&&p1.length<6){$('#pwerr').textContent='A jelszó legalább 6 karakter legyen.';return}
+    if(v==='1'&&p1!==$('#pw2').value){$('#pwerr').textContent='A két jelszó nem egyezik.';return}
+    const fn=pwFn;pwFn=null;$('#cf').hidden=true;if(fn)fn(p1)}
+  else if(a==='snaprest'){const x=snapList().find(s=>String(s.t)===v);if(x)ask('Biztosan visszaállítod ezt a mentést? A jelenlegi adatok felülíródnak.',()=>applyImport(JSON.parse(x.j)))}
+  else if(a==='snapclear'){ask('Biztosan törlöd az összes automatikus mentést? Ez nem vonható vissza.',()=>{try{localStorage.removeItem(SNAPK)}catch(e){}render()})}
+  else if(a==='fs'){S.fs=parseFloat(v);save();render()}
+  else if(a==='rptpdf'){const d=rptData(v);let r=$('#rpt');if(!r){r=document.createElement('div');r.id='rpt';document.body.appendChild(r)}r.innerHTML=rptHtml(d);setTimeout(()=>window.print(),80)}
+  else if(a==='rptxls'){const d=rptData(v);shareBlob(rptXlsx(d),'koltsegvetes-'+(v==='year'?String(yv):mpre())+'.xlsx',false)}
+  else if(a==='bioset'){bioEnable().catch(()=>ask('A biometrikus azonosítás bekapcsolása nem sikerült.',null,1))}
+  else if(a==='biooff'){S.bio='';save();render()}
+  else if(a==='lkbio'){bioUnlock()}
   else if(a==='lkb'){lkIn=lkIn.slice(0,-1);lockShow()}
   else if(a==='payrem'){S.payRem=parseInt(v);save();render()}
   else if(a==='sgdue'){const g=S.sg.find(x=>x.id===v);if(g){g.due=$('#sgdl-'+v).value||'';save();render()}}
   else if(a==='recedit'){const r=S.rec.find(x=>x.id===v);if(r){recId=v;const el=$('#cf');el.innerHTML=`<div class="cbox" role="dialog"><p>Rendszeres kifizetés szerkesztése</p><label style="display:block;color:var(--mut);font-size:13px">Összeg (Ft)<input id="re-a" type="number" inputmode="numeric" value="${r.amt}"></label><label style="display:block;color:var(--mut);font-size:13px">A hónap napja (1-31)<input id="re-d" type="number" min="1" max="31" value="${r.day}"></label><label style="display:block;color:var(--mut);font-size:13px">Megjegyzés<input id="re-n" value="${esc(r.note||'')}"></label><p style="margin:8px 0 0;color:var(--mut);font-size:13px">Csak a következő hónapoktól érvényes.</p><div class="acts"><button class="ghost" data-a="no">Mégse</button><button class="pri" data-a="recsave">Mentés</button></div></div>`;el.hidden=false}}
   else if(a==='recsave'){const r=S.rec.find(x=>x.id===recId),am=parseFloat($('#re-a').value),dy=parseInt($('#re-d').value);if(r&&am>0&&dy>=1&&dy<=31){r.amt=am;r.day=dy;r.note=$('#re-n').value.trim();$('#cf').hidden=true;save();render()}}
+  else if(a==='wipe'){ask('Biztosan törlöd az összes adatot? Ezt nem lehet visszavonni.',()=>{snapNow('Törlés előtt');const pp=S.pin,th=S.theme,fz=S.fs;S=seed();S.pin=pp||'';S.theme=th;S.sgl=[];S.trash=[];S.rec=[];S.open={cash:0,card:0};S.goalM={};S.sg=[];S.icats=[];S.tutDone=true;S.fs=fz;save();tab='home';render()})}
+  else if(a==='setlang'){const first=!$('#lg').hidden;S.lang=v;save();setLang(v);$('#lg').hidden=true;if(first&&!S.tutDone)tutShow()}
+  else if(a==='rcnew'){rcForm()}
+  else if(a==='rcedit'){rcForm(v)}
+  else if(a==='rpacc'){if(rp){rp.acc=v;document.querySelectorAll('[data-a=rpacc]').forEach(x=>x.classList.toggle('on',x.dataset.v===v))}}
+  else if(a==='rcsave'){const n=$('#rc-n').value.trim(),u=$('#rc-u').value,ins=parseFloat($('#rc-i').value)||0;
+    if(rcId){const r=S.recv.find(x=>x.id===rcId);if(!n){$('#rc-err').textContent='Add meg az összes mezőt helyesen.';return}if(r){r.name=n;r.due=u;r.inst=ins}$('#cf').hidden=true;save();render()}
+    else{const t=parseFloat($('#rc-t').value),d=$('#rc-d').value,acc=rp.acc;
+      if(!n||!(t>0)||!d){$('#rc-err').textContent='Add meg az összes mezőt helyesen.';return}
+      const go=()=>{const id=uid();S.recv.push({id,name:n,total:t,date:d,due:u,inst:ins,acc,closed:false});S.tx.push({id:uid(),type:'lend',acc,to:'',amt:t,cat:'',item:'',date:d,note:'',rc:id});save();render()};
+      $('#cf').hidden=true;
+      if(bal(acc)<t)ask('Nincs elég fedezet ('+accN(acc)+'): elérhető '+fmt(Math.max(bal(acc),0))+', a kölcsön összege '+fmt(t)+'. Biztosan rögzíted?',go);else go()}}
+  else if(a==='rcdel'){const r=S.recv.find(x=>x.id===v);ask('Biztosan törlöd a(z) '+esc(r?r.name:'')+' kintlévőséget? A hozzá tartozó mozgások is törlődnek, a számlák egyenlege visszaáll.',()=>{S.recv=S.recv.filter(x=>x.id!==v);S.tx=S.tx.filter(t=>t.rc!==v);save();render()})}
+  else if(a==='rcclose'){const r=S.recv.find(x=>x.id===v);ask('Biztosan lezárod a(z) '+esc(r?r.name:'')+' kintlévőséget? A hátralévő összeg nem számít többé kintlévőségnek, pénzmozgás nem történik.',()=>{if(r)r.closed=true;save();render()})}
+  else if(a==='rcback'){rcBackForm(v)}
+  else if(a==='rcbackok'){const r=S.recv.find(x=>x.id===rp.id);let am=parseFloat($('#rb-a').value);
+    if(!r||!(am>0)){$('#rb-err').textContent='Add meg az összeget.';return}
+    am=Math.min(am,rcRem(r));
+    S.tx.push({id:uid(),type:'back',acc:rp.acc,to:'',amt:am,cat:'',item:'',date:isoD(now),note:'',rc:r.id});
+    $('#cf').hidden=true;save();render()}
+  else if(a==='rcpundo'){ask('Biztosan visszavonod ezt a visszatérítést? A pénz kikerül az egyenlegedből, a kintlévőség újra nő.',()=>{S.tx=S.tx.filter(t=>t.id!==v);save();render()})}
+  else if(a==='lnnew'){lnForm()}
+  else if(a==='lnedit'){lnForm(v)}
+  else if(a==='lnsave'){const n=$('#ln-n').value.trim()||'Hitel',t=parseFloat($('#ln-t').value),pp=parseFloat($('#ln-p').value),dv_=$('#ln-d').value,d=dv_?parseInt(dv_.slice(8,10)):0,e=$('#ln-e').value;
+    if(!(t>0)||!(pp>0)||!(d>=1&&d<=31)||!/^\d{4}-\d{2}$/.test(e)){$('#ln-err').textContent='Add meg az összes mezőt helyesen.';return}
+    if(lnId){const l=S.loans.find(x=>x.id===lnId);if(l){l.name=n;l.total=t;l.pay=pp;l.day=d;l.end=e}}else S.loans.push({id:uid(),name:n,total:t,pay:pp,day:d,end:e,since:lnYM()});
+    $('#cf').hidden=true;save();render()}
+  else if(a==='lndel'){const l=S.loans.find(x=>x.id===v);ask('Biztosan törlöd a(z) '+esc(l?l.name:'')+' hitelt? A korábbi befizetések a kiadások között maradnak.',()=>{S.loans=S.loans.filter(x=>x.id!==v);save();render()})}
+  else if(a==='lnpay'){lnPayForm(v)}
+  else if(a==='lpacc'){if(lp){lp.acc=v;document.querySelectorAll('[data-a=lpacc]').forEach(x=>x.classList.toggle('on',x.dataset.v===v))}}
+  else if(a==='lnpayok'){const l=S.loans.find(x=>x.id===lp.id);let am=parseFloat($('#lp-a').value);
+    if(!l||!(am>0)){$('#lp-err').textContent='Add meg az összeget.';return}
+    const rem=lnRem(l);am=Math.min(am,rem);const acc=lp.acc,m=$('#lp-m')?$('#lp-m').value:lp.m;
+    const go=()=>{S.tx.push({id:uid(),type:'out',acc,to:'',amt:am,cat:'loan',item:'',date:isoD(now),note:'',ln:l.id,lm:m});save();render()};
+    $('#cf').hidden=true;
+    if(bal(acc)<am)ask('Nincs elég fedezet ('+accN(acc)+'): elérhető '+fmt(Math.max(bal(acc),0))+', a törlesztés '+fmt(am)+'. Biztosan befizeted?',go);else go()}
+  else if(a==='lnpundo'){ask('Biztosan visszavonod ezt a befizetést? A pénz visszakerül az egyenlegedre.',()=>{S.tx=S.tx.filter(t=>t.id!==v);save();render()})}
+  else if(a==='expfile'){saveFile()}
+  else if(a==='impfile'){const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=()=>{const f=inp.files[0];if(f)f.text().then(importText)};inp.click()}
+  else if(a==='bksnooze'){S.bkSnooze=isoD(new Date(now.getTime()+7*864e5));save();render()}
   else if(a==='tnext'){if(ti<TUT.length-1){ti++;tutShow()}else tutEnd()}
   else if(a==='tback'){if(ti>0){ti--;tutShow()}}
   else if(a==='tskip'){tutEnd()}
@@ -439,21 +769,19 @@ document.addEventListener('click',e=>{
     const d=g&&n>0?(a==='sgadd'?n:-Math.min(n,g.saved)):0;
     if(d){const go=()=>{S.tx.push({id:uid(),type:d>0?'out':'in',acc:ac,to:'',amt:Math.abs(d),cat:d>0?'sav':'',item:'',date:iso(now.getFullYear(),now.getMonth(),now.getDate()),note:'',sg:g.id});save();render()};
       if(d>0&&bal(ac)<d)ask('Nincs elég fedezet ('+accN(ac)+'): elérhető '+fmt(Math.max(bal(ac),0))+', a befizetés '+fmt(d)+'. Biztosan befizeted?',go);else go()}}
-  else if(a==='sgdel'){const g=S.sg.find(x=>x.id===v);ask('Biztosan törlöd a(z) '+esc(g?g.name:'')+' célt? A célhoz tartozó befizetések törlődnek a kiadások közül, az összeg visszakerül az egyenlegedére.',()=>{S.tx=S.tx.filter(t=>t.sg!==v);S.sg=S.sg.filter(x=>x.id!==v);save();render()})}
+  else if(a==='sgdel'){const g=S.sg.find(x=>x.id===v);ask('Biztosan törlöd a(z) '+esc(g?g.name:'')+' célt? A célhoz tartozó befizetések törlődnek a kiadások közül, az összeg visszakerül az egyenlegedre.',()=>{S.tx=S.tx.filter(t=>t.sg!==v);S.sg=S.sg.filter(x=>x.id!==v);save();render()})}
   else if(a==='dv'){dv=v==='1';render()}
   else if(a==='recdel'){ask('Biztosan törlöd a rendszeres kifizetést? A már rögzített tételek megmaradnak.',()=>{S.rec=S.rec.filter(x=>x.id!==v);save();render()})}
   else if(a==='opensave'){S.open={cash:parseFloat($('#oc').value)||0,card:parseFloat($('#ok').value)||0};save();render()}
-  else if(a==='expj'){$('#bx').value=JSON.stringify(Object.assign({},S,{pin:''}))}
-  else if(a==='expc'){$('#bx').value=['Dátum;Típus;Összeg;Számla;Kategória;Tétel;Megjegyzés'].concat(S.tx.slice().sort((x,y)=>x.date.localeCompare(y.date)).map(t=>[t.date,{in:'Bevétel',out:'Kiadás',tr:'Átvezetés'}[t.type],Math.round(t.amt),t.type==='tr'?accN(t.acc)+' → '+accN(t.to):accN(t.acc),t.type==='in'?icN(t.cat):catN(t.cat),itemN(t.cat,t.item),'"'+(t.note||'').split('"').join('""')+'"'].join(';'))).join(String.fromCharCode(10))}
-  else if(a==='expcopy'){const t=$('#bx');t.select();try{navigator.clipboard.writeText(t.value)}catch(x){}try{document.execCommand('copy')}catch(x){}}
-  else if(a==='imp'){let o=null;try{o=JSON.parse($('#bx').value)}catch(x){}
-    if(!o||!Array.isArray(o.cats)||!Array.isArray(o.tx))ask('A beillesztett szöveg nem érvényes mentés.',null,1);
-    else ask('Biztosan visszatöltöd a mentést? A jelenlegi adatok felülíródnak.',()=>{const pp=S.pin;S=o;S.pin=pp||'';S.sgl=S.sgl||[];S.trash=S.trash||[];S.rec=S.rec||[];S.open=S.open||{cash:0,card:0};S.goalM=S.goalM||{};S.sg=S.sg||[];S.icats=S.icats||[{id:'ic1',name:'Fizetés'},{id:'ic2',name:'Ajándék'},{id:'ic3',name:'Egyéb bevétel'}];save();render()})}
+  else if(a==='expj'){$('#bx').value=JSON.stringify(Object.assign({},S,{pin:'',bio:'',pinFail:undefined}))}
+  else if(a==='expc'){$('#bx').value=['Dátum;Típus;Összeg;Számla;Kategória;Tétel;Megjegyzés'].concat(S.tx.slice().sort((x,y)=>x.date.localeCompare(y.date)).map(t=>[t.date,{in:'Bevétel',out:'Kiadás',tr:'Átvezetés',lend:'Kölcsönadás',back:'Visszakapott'}[t.type],Math.round(t.amt),t.type==='tr'?accN(t.acc)+' → '+accN(t.to):accN(t.acc),t.type==='in'?icN(t.cat):catN(t.cat),itemN(t.cat,t.item),'"'+(t.note||'').split('"').join('""')+'"'].join(';'))).join(String.fromCharCode(10))}
+  else if(a==='expcopy'){const t=$('#bx');t.select();try{navigator.clipboard.writeText(t.value)}catch(x){}try{document.execCommand('copy')}catch(x){}S.lastBackup=isoD(now);save()}
+  else if(a==='imp'){importText($('#bx').value)}
   else if(a==='restore'){const t=S.trash.find(x=>x.id===v);if(t){const r=Object.assign({},t);delete r.deletedAt;S.trash=S.trash.filter(x=>x.id!==v);S.tx.push(r);save();render()}}
-  else if(a==='purge'){ask('Véglesen törlöd ezt a tételt? Ez nem vonható vissza.',()=>{S.trash=S.trash.filter(x=>x.id!==v);save();render()})}
+  else if(a==='purge'){ask('Véglegesen törlöd ezt a tételt? Ez nem vonható vissza.',()=>{S.trash=S.trash.filter(x=>x.id!==v);save();render()})}
   else if(a==='no'||a==='yes'){const fn=a==='yes'?yesFn:null;yesFn=null;$('#cf').hidden=true;if(fn)fn()}
   else if(a==='save')doSave();
-  else if(a==='del'){sync();ask('Biztosan törlöd ezt a tételt? A Törölt tételek között megtalálod.',()=>{const t=S.tx.find(x=>x.id===f.id);if(t)S.trash.push(Object.assign({},t,{deletedAt:Date.now()}));S.tx=S.tx.filter(x=>x.id!==f.id);f=null;save();sheet();render()})}
+  else if(a==='del'){sync();const t=S.tx.find(x=>x.id===f.id);if(t){const id=t.id;S.trash.push(Object.assign({},t,{deletedAt:Date.now()}));S.tx=S.tx.filter(x=>x.id!==id);f=null;save();sheet();render();toast('Tétel törölve.',()=>undelTx([id]))}}
   else if(a==='catadd'){const n=$('#nc').value.trim();if(n){S.cats.push({id:uid(),name:n,items:[]});save();render()}}
   else if(a==='itemadd'){const n=$('#ni-'+v).value.trim(),c=S.cats.find(x=>x.id===v);if(n&&c){c.items.push({id:uid(),name:n});save();render()}}
   else if(a==='itemdel'){const p=v.split('|');ask('Biztosan törlöd a(z) '+esc(itemN(p[0],p[1]))+' tételt?',()=>{const c=S.cats.find(x=>x.id===p[0]);c.items=c.items.filter(i=>i.id!==p[1]);save();render()})}
@@ -465,15 +793,17 @@ document.addEventListener('click',e=>{
 document.addEventListener('change',e=>{
   if(!f)return;
   if(e.target.id==='fc'){sync();f.item='';sheet()}
-  else if(e.target.id==='fi'){sync();sheet()}
+  else if(e.target.id==='fi'){sync();prefillItem();sheet()}
 });
 const TUT=[
 ['Kezdjük a Beállításokkal','Üdv a Költségvetésben! Először állítsd be az alapokat. A bal oldali menü Kategóriák pontjában vedd fel a kategóriáidat és tételeiket (például Streaming, azon belül Netflix), a jobb felső fogaskeréken pedig a kezdő egyenleget és a mentést. Első lépésként érdemes megadni a kezdő egyenleget.'],
-['Áttekintés','Az Összes pénz kártya a készpénzed és a bankkártyád egyenlegét mutatja együtt és külön is. Alatta a havi bevétel és kiadás, majd a rendszeres kifizetések látszanak. A hónapot a fent lévő nyílakkal válthatod.'],
+['Áttekintés','Az Összes pénz kártya a készpénzed és a bankkártyád egyenlegét mutatja együtt és külön is. Alatta a havi bevétel és kiadás, majd a rendszeres kifizetések látszanak. A hónapot a fent lévő nyilakkal válthatod.'],
 ['Kiadások és bevételek','Az alsó sávban a Bevételek és a Kiadások menü van. Itt listázhatod és kereshetsz a tételek között, és az Új kiadás vagy Új bevétel gombbal vihetsz fel újat. Kiadásnál ki kell választanod, hogy készpénzből vagy kártyával fizettél.'],
 ['Számlák közötti átvezetés','Ha például pénzt veszel fel a bankautomatából, használd az Áttekintés oldalon a Számlák közötti átvezetés gombot. Az összes pénzed nem változik, csak a két számla egyenlege.'],
-['Oldalsó menü','A bal felső három csíkra koppintva nyílik az oldalsó menü: Áttekintés, Átvezetések, Megtakarítási célok, Kategóriák, Éves és Havi kimutatás, Naptár.'],
-['Megtakarítási célok','Hozz létre célt (például Nyaralás), és fizess be bele készpénzből vagy bankkártyáról. A befizetés kiadásként jelenik meg, a kivétel bevételként kerül vissza.']
+['Oldalsó menü','A bal felső három csíkra koppintva nyílik az oldalsó menü: Áttekintés, Átvezetések, Megtakarítási célok, Hitel, Kintlévőség, Kategóriák, Éves és Havi kimutatás, Naptár.'],
+['Megtakarítási célok','Hozz létre célt (például Nyaralás), és fizess be bele készpénzből vagy bankkártyáról. A befizetés kiadásként jelenik meg, a kivétel bevételként kerül vissza.'],
+['Hitel','Az oldalsó menü Hitel pontjában add meg a hiteled összegét, a havi törlesztőrészletet, a törlesztés napját és a lejáratot. Az Áttekintésen a Befizettem gombbal rögzítheted a törlesztést, az összeg levonódik a kiválasztott számláról.'],
+['Kintlévőség','Ha valaki tartozik neked, például kölcsönadtál neki, vedd fel az oldalsó menü Kintlévőség pontjában. A kölcsönadott összeg levonódik a kiválasztott számláról, a visszakapott pénz pedig visszakerül. Amíg van kintlévőséged, az Összes pénz kártyán külön is látszik.']
 ];
 let ti=0;
 function tutShow(){const s=TUT[ti],last=ti===TUT.length-1,el=$('#tu');el.hidden=false;
@@ -494,7 +824,80 @@ function applyRec(){
 }
 document.addEventListener('input',e=>{if(e.target.id==='fq'){qf.q=e.target.value;$('#lres').innerHTML=listHtml()}});
 document.addEventListener('change',e=>{const m={fa2:'acc',ft:'type',fc2:'cat'}[e.target.id];if(m){qf[m]=e.target.value;$('#lres').innerHTML=listHtml()}});
-applyRec();render();if(S.pin)lockShow();else if(!S.tutDone)tutShow();
+
+// ---------- Nyelv: magyar / angol ----------
+const EN_D={"Költségvetés": "Budget", "Ft": "Ft", "Igen": "Yes", "Nem": "No", "OK": "OK", "Mégse": "Cancel", "Mentés": "Save", "Törlés": "Delete", "Törlés ({0})": "Delete ({0})", "Szerkesztés": "Edit", "Átnevezés": "Rename", "Módosítás": "Change", "Hozzáad": "Add", "Létrehozás": "Create", "Tovább": "Next", "Vissza": "Back", "Kihagyás": "Skip", "Kezdjük": "Let's start", "Mind": "All", "Nincs megadva": "Not specified", "Egyéb": "Other", "Ki": "Off", "Rendszer": "System", "Világos": "Light", "Sötét": "Dark", "Menü": "Menu", "Összes pénz": "Total money", "Készpénz": "Cash", "Bankkártya": "Bank card", "Számla": "Account", "Bevétel": "Income", "Bevételek": "Income", "Kiadás": "Expense", "Kiadások": "Expenses", "Átvezetés": "Transfer", "Átvezetések": "Transfers", "Megtakarítás": "Savings", "Összeg": "Amount", "Megjegyzés": "Note", "Kategória": "Category", "Kategóriák": "Categories", "Tétel": "Item", "Tételek": "Transactions", "Név": "Name", "Dátum": "Date", "Típus": "Type", "Áttekintés": "Overview", "Naptár": "Calendar", "Havi kimutatás": "Monthly report", "Éves kimutatás": "Yearly report", "Beállítások": "Settings", "Oldalsó menü": "Side menu", "Számlák közötti átvezetés": "Transfer between accounts", "Számlák közötti átvezetések": "Transfers between accounts", "Megtakarítási célok": "Savings goals", "Rendszeres kifizetések": "Recurring payments", "Nincs rendszeres kifizetés. Új tételnél jelöld be a „Rendszeres kifizetés (havonta)” négyzetet.": "No recurring payments. When adding a new item, tick the \"Recurring payment (monthly)\" box.", "Minden hónap {0}. napján, következő: {1}{2}": "On day {0} of every month, next: {1}{2}", "Ebben a hónapban nincs átvezetés.": "No transfers this month.", "Legutóbb törölt tételek": "Recently deleted items", "Célok kezelése": "Manage goals", "Nincs tétel ebben az időszakban.": "No items in this period.", "Nincs tétel ebben a hónapban.": "No items this month.", "Nincs törölt tétel.": "No deleted items.", "Nincs kiadás.": "No expenses.", "Törölt ({0})": "Deleted ({0})", "Kijelölés": "Select", "Kijelölés vége": "Done selecting", "Mind kijelölése": "Select all", "Találatok: {0} (minden hónapban)": "Results: {0} (all months)", "{0} összesen: {1}": "{0} total: {1}", "Keresés: tétel, megjegyzés, összeg": "Search: item, note, amount", "Visszaállítás": "Restore", "Végleges törlés": "Delete permanently", "Biztosan törlöd a kijelölt {0} tételt? A Törölt tételek között megtalálod.": "Delete the {0} selected items? You can find them under Deleted.", "Véglegesen törlöd ezt a tételt? Ez nem vonható vissza.": "Delete this item permanently? This cannot be undone.", "Ez egy megtakarítási befizetés. A Megtakarítási célok oldalon tudsz befizetni vagy kivenni.": "This is a savings deposit. You can deposit or withdraw on the Savings goals page.", "Új tétel": "New item", "Új kiadás": "New expense", "Új bevétel": "New income", "Új átvezetés": "New transfer", "Honnan": "From", "Hová: {0}": "To: {0}", "Elérhető készpénz: {0}, bankkártyán: {1}": "Available cash: {0}, on card: {1}", "Bevételi kategória": "Income category", "Rendszeres kifizetés (havonta)": "Recurring payment (monthly)", "Add meg az összeget.": "Enter the amount.", "Előbb hozz létre egy kategóriát a Kategóriák menüben (☰).": "Create a category first in the Categories menu (☰).", "Nincs elég fedezet ({0}): elérhető {1}, a tétel összege {2}. Biztosan rögzíted?": "Not enough funds ({0}): available {1}, item amount {2}. Record it anyway?", "Biztosan törlöd ezt a tételt? A Törölt tételek között megtalálod.": "Delete this item? You can find it under Deleted.", "Elérhető készpénz": "Available cash", "Elérhető a bankkártyán": "Available on card", "Kiadások kategóriánként": "Expenses by category", "Bevételek kategóriánként": "Income by category", "Napi kiadások": "Daily expenses", "Összes pénz alakulása a hónapban": "Total money over the month", "Összehasonlítás az előző hónappal": "Comparison with last month", "Az előző hónapra nincs adat.": "No data for last month.", "Ugyanannyit költöttél": "You spent the same", "{0}%-kal {1} költöttél": "You spent {0}% {1}", "többet": "more", "kevesebbet": "less", "{0} ebben a hónapban, {1} az előzőben": "{0} this month, {1} last month", "Bevétel és kiadás havonta": "Income and expenses by month", "Hónapok": "Months", "Megtakarítás: {0}": "Savings: {0}", "Kivétel": "Withdrawal", "Kivétel: {0}": "Withdrawal: {0}", "cél": "goal", "Havi átlag megtakarítás": "Average monthly savings", "Új megtakarítási cél": "New savings goal", "Új cél": "New goal", "Cél összeg": "Target amount", "Pl. Nyaralás": "e.g. Vacation", "Befizetés": "Deposit", "Befizetés / kivétel": "Deposit / withdraw", "Elérted a célt.": "You reached the goal.", "Sikerült, elérted a célt.": "Success, you reached the goal.", "Még {0} hiányzik.": "{0} to go.", "Még {0} hiányzik a célig.": "{0} to go until the goal.", "Határidő (nem kötelező)": "Deadline (optional)", "Határidő (hónap)": "Deadline (month)", "Határidő megadása": "Set deadline", "Határidő módosítása": "Change deadline", "Határidő: {0}": "Deadline: {0}", "Határidő: {0}. {1}": "Deadline: {0}. {1}", "{0}. A határidő lejárt.": "{0}. The deadline has passed.", "{0}. Havonta {1} félretételével érhető el a cél ({2} hónap van hátra).": "{0}. Saving {1} per month reaches the goal ({2} months left).", "Elérhető: {0}": "Available: {0}", "Nincs elég fedezet ({0}): elérhető {1}, a befizetés {2}. Biztosan befizeted?": "Not enough funds ({0}): available {1}, deposit {2}. Deposit anyway?", "Biztosan törlöd a(z) {0} célt? A célhoz tartozó befizetések törlődnek a kiadások közül, az összeg visszakerül az egyenlegedre.": "Delete the goal {0}? Its deposits are removed from expenses and the amount returns to your balance.", "A befizetés kiadásként jelenik meg (Megtakarítás kategória), és levonódik a kiválasztott számláról. A kivétel bevételként kerül vissza.": "A deposit appears as an expense (Savings category) and is deducted from the chosen account. A withdrawal returns as income.", "Új kategória": "New category", "Pl. Utazás": "e.g. Travel", "Pl. Prémium": "e.g. Bonus", "Új tétel, pl. Spotify": "New item, e.g. Spotify", "Kategória új neve": "New category name", "Tétel új neve": "New item name", "Bevételi kategória új neve": "New income category name", "Bevételi kategóriák": "Income categories", "Új tétel neve": "New item name", "Törlöd a(z) {0} kategóriát? A korábbi tételek megmaradnak.": "Delete the category {0}? Earlier items are kept.", "Biztosan törlöd a(z) {0} kategóriát? A korábbi bevételek megmaradnak.": "Delete the category {0}? Earlier income is kept.", "Kezdő egyenleg": "Opening balance", "Kezdő egyenleg mentése": "Save opening balance", "Kezdő egyenleg mentve.": "Opening balance saved.", "Mentés és exportálás": "Backup and export", "Mentés másolása": "Copy backup", "CSV másolása": "Copy CSV", "Visszatöltés vágólapról": "Restore from clipboard", "A mentés a vágólapra másolva. Illeszd be egy jegyzetbe vagy küldd el magadnak.": "Backup copied to the clipboard. Paste it into a note or send it to yourself.", "A CSV a vágólapra másolva.": "CSV copied to the clipboard.", "A mentés visszatöltve.": "Backup restored.", "A vágólapon nincs érvényes mentés.": "No valid backup on the clipboard.", "Biztosan visszatöltöd a vágólapon lévő mentést? A jelenlegi adatok felülíródnak.": "Restore the backup from the clipboard? Current data will be overwritten.", "Zárolás": "Lock", "PIN beállítása": "Set PIN", "PIN módosítása": "Change PIN", "PIN törlése": "Remove PIN", "Ujjlenyomatos feloldás": "Fingerprint unlock", "Ujjlenyomatos feloldás bekapcsolása": "Turn on fingerprint unlock", "A PIN nem titkosítja az adataidat, csak az app megnyitását védi.": "The PIN does not encrypt your data, it only protects opening the app.", "Jelenlegi PIN": "Current PIN", "Új PIN (4 számjegy)": "New PIN (4 digits)", "PIN megerősítése": "Confirm PIN", "A PIN pontosan 4 számjegy legyen.": "The PIN must be exactly 4 digits.", "A két PIN nem egyezik.": "The two PINs do not match.", "A PIN beállítva. Az app megnyitásakor kérni fogja.": "PIN set. The app will ask for it when opened.", "A PIN törölve.": "PIN removed.", "Hibás PIN.": "Wrong PIN.", "Hibás PIN": "Wrong PIN", "Add meg a PIN kódot": "Enter your PIN", "Add meg a PIN-t a törléshez": "Enter the PIN to remove it", "Oldd fel az alkalmazást": "Unlock the app", "Az ujjlenyomat ezen az eszközön nem érhető el.": "Fingerprint is not available on this device.", "Fizetési emlékeztető": "Payment reminder", "Fizetési emlékeztetők": "Payment reminders", "1 nappal előtte": "1 day before", "3 nappal előtte": "3 days before", "Az esedékesség napján": "On the due date", "Értesítés a rendszeres kifizetések előtt, reggel 9 órakor.": "Notification before recurring payments, at 9 am.", "Napi emlékeztető": "Daily reminder", "Emlékeztető a költések rögzítésére": "Reminder to record spending", "Minden nap {0}:{1}": "Every day at {0}:{1}", "Időpont módosítása": "Change time", "Rögzítetted ma a költéseidet?": "Did you record your spending today?", "Megjelenés": "Appearance", "Nyelv": "Language", "Bemutató": "Tutorial", "Bemutató megnyitása": "Open tutorial", "Adatok törlése": "Delete data", "Minden adat törlése": "Delete all data", "Biztosan törlöd az összes adatot? Ezt nem lehet visszavonni.": "Delete all data? This cannot be undone.", "Letörli a tételeket, kategóriákat, célokat és a kezdő egyenleget. A PIN és a megjelenés megmarad. Előbb készíts mentést.": "Deletes items, categories, goals and the opening balance. The PIN and appearance stay. Make a backup first.", "Rendszeres kifizetés szerkesztése": "Edit recurring payment", "A hónap napja (1-31)": "Day of the month (1-31)", "Csak a következő hónapoktól érvényes.": "Applies from next month on.", "Biztosan törlöd a rendszeres kifizetést? A már rögzített tételek megmaradnak.": "Delete the recurring payment? Items already recorded are kept.", "Beállítás": "Set", "Add meg, mennyit szeretnél havonta félretenni.": "Enter how much you want to save each month.", "Erre a hónapra és a következőkre érvényes.": "Valid for this month and the following ones.", "Havi megtakarítási cél": "Monthly savings goal", "Kezdjük a Beállításokkal": "Start with Settings", "Üdv a Költségvetésben! Először állítsd be az alapokat. A bal oldali menü Kategóriák pontjában vedd fel a kategóriáidat és tételeiket (például Streaming, azon belül Netflix), a jobb felső fogaskeréken pedig a kezdő egyenleget és a mentést. Első lépésként érdemes megadni a kezdő egyenleget.": "Welcome to Budget! First set up the basics. In the Categories item of the left menu, add your categories and items (for example Streaming, and Netflix inside it), and on the gear at the top right set the opening balance and backups. As a first step it is worth entering your opening balance.", "Az Összes pénz kártya a készpénzed és a bankkártyád egyenlegét mutatja együtt és külön is. Alatta a havi bevétel és kiadás, majd a rendszeres kifizetések látszanak. A hónapot a fent lévő nyilakkal válthatod.": "The Total money card shows your cash and bank card balance together and separately. Below it you see the monthly income and expenses, then the recurring payments. Change the month with the arrows at the top.", "Kiadások és bevételek": "Expenses and income", "Az alsó sávban a Bevételek és a Kiadások menü van. Itt listázhatod és kereshetsz a tételek között, és az Új kiadás vagy Új bevétel gombbal vihetsz fel újat. Kiadásnál ki kell választanod, hogy készpénzből vagy kártyával fizettél.": "The bottom bar has the Income and Expenses menus. List and search items there, and add new ones with the New expense or New income button. For an expense choose whether you paid in cash or by card.", "Ha például pénzt veszel fel a bankautomatából, használd az Áttekintés oldalon a Számlák közötti átvezetés gombot. Az összes pénzed nem változik, csak a két számla egyenlege.": "For example when you withdraw money from an ATM, use the Transfer between accounts button on the Overview page. Your total money does not change, only the two account balances.", "A bal felső három csíkra koppintva nyílik az oldalsó menü: Áttekintés, Átvezetések, Megtakarítási célok, Kategóriák, Éves és Havi kimutatás, Naptár.": "Tap the three lines at the top left to open the side menu: Overview, Transfers, Savings goals, Categories, Yearly and Monthly report, Calendar.", "Hozz létre célt (például Nyaralás), és fizess be bele készpénzből vagy bankkártyáról. A befizetés kiadásként jelenik meg, a kivétel bevételként kerül vissza.": "Create a goal (for example Vacation) and pay into it from cash or card. A deposit appears as an expense, a withdrawal comes back as income.", "Az Összes pénz kártya": "The Total money card", "Teljesítve, pont elérted a célt.": "Completed, you hit the goal exactly.", "Teljesítve, {0} a cél felett vagy.": "Completed, you are {0} above the goal.", "+ Számlák közötti átvezetés": "+ Transfer between accounts", "+ Új bevétel": "+ New income", "+ Új kiadás": "+ New expense", "+ Új tétel": "+ New item", "1 nap előtte": "1 day before", "3 nap előtte": "3 days before", "Aznap": "On the day", "4 számjegyű PIN, az app megnyitásakor kéri. Az ujjlenyomatos feloldás csak az Android alkalmazásban érhető el. A PIN nem titkosítja az adataidat, csak az app megnyitását védi.": "4-digit PIN, requested when the app opens. Fingerprint unlock is only available in the Android app. The PIN does not encrypt your data, it only protects opening the app.", "A beillesztett szöveg nem érvényes mentés.": "The pasted text is not a valid backup.", "Add meg a jelenlegi PIN-t": "Enter your current PIN", "Az értesítést az Android alkalmazás küldi a rendszeres kifizetések előtt. Ezen az oldalon az Áttekintésen pirossal jelöljük a 3 napon belül esedékeset.": "Notifications are sent by the Android app before recurring payments. On this page the Overview marks payments due within 3 days in red.", "Az emlékeztető csak az Android alkalmazásban működik, a webes változat nem tud értesítést küldeni.": "Reminders only work in the Android app; the web version cannot send notifications.", "Bankkártya → Készpénz": "Bank card → Cash", "Készpénz → Bankkártya": "Cash → Bank card", "Bevételek összesen": "Income total", "Kiadások összesen": "Expenses total", "Cél létrehozása": "Create goal", "CSV": "CSV", "Határidő": "Deadline", "Kategória törlése": "Delete category", "Kijelölés és másolás": "Select and copy", "Legutóbb törölt átvezetések": "Recently deleted transfers", "Mentés szövegként": "Backup as text", "Nincs találat.": "No results.", "Rendben": "OK", "Tétel hozzáadása erre a napra": "Add an item on this day", "Visszatöltés a szövegből": "Restore from text", "Erre a napra nincs tétel.": "No items on this day.", "Pl. közös előfizetés": "e.g. shared subscription", "Itt jelenik meg a mentés. Visszatöltéshez illeszd be ide a korábbi mentést.": "Your backup appears here. To restore, paste an earlier backup here.", "Előző hónap": "Previous month", "Következő hónap": "Next month", "Előző év": "Previous year", "Következő év": "Next year", "Havi bevétel és kiadás oszlopdiagram": "Monthly income and expenses bar chart", "Napi kiadások oszlopdiagram": "Daily expenses bar chart", "Összes pénz vonaldiagram": "Total money line chart", "Még nincs tétel ebben az időszakban. Az „Új tétel” gombbal rögzíthetsz egyet.": "No items in this period yet. Use the \"New item\" button to add one.", "Ebben a hónapban nincs átvezetés. A „Számlák közötti átvezetés” gombbal rögzíthetsz egyet.": "No transfers this month. Use the \"Transfer between accounts\" button to record one.", "Még nincs tétel ebben a kategóriában.": "No items in this category yet.", "Még nincs bevételi kategória.": "No income categories yet.", "Letörli a tételeket, kategóriákat, célokat és kezdő egyenleget, az app üresen indul újra. A PIN és a megjelenés megmarad. Előbb készíts mentést.": "Deletes items, categories, goals and the opening balance; the app starts empty again. The PIN and appearance stay. Make a backup first.", "Minta tételek törlése": "Delete sample items", "Biztosan törlöd a minta tételeket? A kategóriák megmaradnak.": "Delete the sample items? Categories are kept.", "Biztosan törlöd a(z) {0} kategóriát? A korábbi bevételek megmaradnak, de kategória nélkül.": "Delete the category {0}? Earlier income is kept, without a category.", "Biztosan törlöd a(z) {0} tételt?": "Delete the item {0}?", "Biztosan törlöd a(z) {0} kategóriát? A korábbi tételek megmaradnak.": "Delete the category {0}? Earlier items are kept.", "Biztosan visszatöltöd a mentést? A jelenlegi adatok felülíródnak.": "Restore the backup? Current data will be overwritten.", "Ez a(z) {0} megtakarítási befizetés. A Megtakarítási célok oldalon tudsz befizetni vagy kivenni.": "This is a savings deposit ({0}). You can deposit or withdraw on the Savings goals page.", "Határidő: {0}. {1}.": "Deadline: {1} {0}.", "Határidő: {0}. {1}. {2}": "Deadline: {1} {0}. {2}", "Havonta {0} félretételével elérhető a cél ({1} hónap van hátra).": "Saving {0} per month reaches the goal ({1} months left).", "A határidő lejárt.": "The deadline has passed.", "Minden hónap {0}. napján, következő: {1}": "On day {0} of every month, next: {1}", "H": "M", "K": "T", "Sze": "W", "Cs": "T", "P": "F", "Szo": "S", "V": "S", "Üdv a Költségvetésben": "Welcome to Budget", "Összeg (Ft)": "Amount (Ft)", "{0} törlése": "Delete {0}", "Hitel": "Loan", "Hitel: {0}": "Loan: {0}", "Új hitel": "New loan", "Hitel szerkesztése": "Edit loan", "Pl. Lakáshitel": "e.g. Mortgage", "Hitel összege": "Loan amount", "Hitel összege (Ft)": "Loan amount (Ft)", "A hátralévő tartozás a befizetésekkel csökken.": "The remaining debt decreases with each payment.", "Havi törlesztőrészlet": "Monthly installment", "Havi törlesztőrészlet (Ft)": "Monthly installment (Ft)", "Törlesztés napja (1-31)": "Payment day (1-31)", "Lejárati dátum": "Maturity date", "Lejárat: {0}": "Maturity: {0}", "Add meg az összes mezőt helyesen.": "Fill in all fields correctly.", "Hátralévő összeg: {0} (a hitel összege: {1})": "Remaining: {0} (loan amount: {1})", "Havi törlesztőrészlet: {0}": "Monthly installment: {0}", "Esedékesség: minden hónap {0}. napján": "Due on day {0} of every month", "Lejárat: {0}, hátralévő hónapok: {1}": "Maturity: {0}, months left: {1}", "Kifizetve": "Paid off", "Ebben a hónapban befizetve ✓": "Paid this month ✓", "Ma esedékes": "Due today", "Késik: {0} napja esedékes": "Overdue: due {0} days ago", "Hamarosan esedékes: {0}": "Due soon: {0}", "Következő törlesztés: {0}": "Next payment: {0}", "Befizettem": "I paid", "Hitel törlesztése: {0}": "Loan payment: {0}", "Hitel törlesztés": "Loan payment", "Befizetés rögzítése": "Record payment", "Befizetés visszavonása": "Undo payment", "Biztosan visszavonod ezt a befizetést? A pénz visszakerül az egyenlegedre.": "Undo this payment? The money returns to your balance.", "Biztosan törlöd a(z) {0} hitelt? A korábbi befizetések a kiadások között maradnak.": "Delete the loan {0}? Earlier payments stay among the expenses.", "Még nincs hitel felvéve.": "No loans added yet.", "Nincs elég fedezet ({0}): elérhető {1}, a törlesztés {2}. Biztosan befizeted?": "Not enough funds ({0}): available {1}, payment {2}. Record it anyway?", "Ez egy hitel törlesztése. A Hitel oldalon vonhatod vissza.": "This is a loan payment. You can undo it on the Loan page.", "A bal felső három csíkra koppintva nyílik az oldalsó menü: Áttekintés, Átvezetések, Megtakarítási célok, Hitel, Kategóriák, Éves és Havi kimutatás, Naptár.": "Tap the three lines at the top left to open the side menu: Overview, Transfers, Savings goals, Loan, Categories, Yearly and Monthly report, Calendar.", "Az oldalsó menü Hitel pontjában add meg a hiteled összegét, a havi törlesztőrészletet, a törlesztés napját és a lejáratot. Az Áttekintésen a Befizettem gombbal rögzítheted a törlesztést, az összeg levonódik a kiválasztott számláról.": "In the Loan item of the side menu enter your loan amount, the monthly installment, the payment day and the maturity. On the Overview page the I paid button records the payment, and the amount is deducted from the chosen account.", "Törlesztés napja": "Payment day", "Törlesztés napja: {0}": "Payment day: {0}", "A hiteltörlesztő esedékességének napja. A naptárban válaszd ki ezt a napot, minden hónapban erre a napra esik majd a törlesztés.": "The due date of the loan installment. Pick this day in the calendar; the payment will fall on this day every month.", "Hitel típusa": "Loan type", "Áruhitel": "Retail installment loan", "Személyi kölcsön": "Personal loan", "Lakáshitel": "Mortgage", "Autótörlesztő": "Car loan", "Babaváró hitel": "Baby loan (Babaváró)", "Diákhitel": "Student loan", "Folyószámlahitel": "Overdraft", "Hitelkártya": "Credit card", "Szabad felhasználású jelzáloghitel": "Free-use mortgage loan", "Lakásfelújítási hitel": "Home renovation loan", "Lízing": "Leasing", "Munkáltatói kölcsön": "Employer loan", "Magánkölcsön": "Private loan (family or friends)", "Elmaradt a(z) {0} törlesztése: {1}, {2} napja volt esedékes.": "Missed payment for {0}: {1}, due {2} days ago.", "Kintlévőség": "Owed to you", "Új kintlévőség": "Add money lent", "Kintlévőség szerkesztése": "Edit money lent", "Kinek adtad kölcsön?": "Who did you lend to?", "Pl. Péter": "e.g. Peter", "Kölcsönadott összeg": "Amount lent", "Kölcsönadott összeg (Ft)": "Amount lent (Ft)", "Honnan adtad?": "Paid from", "Hova érkezett?": "Received into", "Kölcsönadás dátuma": "Date lent", "Visszafizetési határidő": "Repayment deadline", "Visszafizetési határidő (nem kötelező)": "Repayment deadline (optional)", "Kölcsön: {0}": "Loan to {0}", "Visszakapott: {0}": "Repaid by {0}", "Kölcsönadva: {0}": "Lent on: {0}", "Nincs határidő megadva": "No deadline set", "Visszafizetve": "Repaid in full", "Lezárva": "Closed", "Lezárás": "Close", "Lejárt a határidő: {0} napja": "Deadline passed {0} days ago", "Visszakaptam": "I got it back", "Visszatérítés: {0}": "Repayment from {0}", "Visszatérítés rögzítése": "Record repayment", "Biztosan lezárod a(z) {0} kintlévőséget? A hátralévő összeg nem számít többé kintlévőségnek, pénzmozgás nem történik.": "Close the amount owed by {0}? The remaining amount no longer counts as owed to you, and no money is moved.", "Biztosan törlöd a(z) {0} kintlévőséget? A hozzá tartozó mozgások is törlődnek, a számlák egyenlege visszaáll.": "Delete the amount owed by {0}? Its movements are removed too and account balances return to how they were.", "Még nincs kintlévőség.": "Nothing owed to you yet.", "Nincs elég fedezet ({0}): elérhető {1}, a kölcsön összege {2}. Biztosan rögzíted?": "Not enough funds ({0}): available {1}, loan amount {2}. Record it anyway?", "Lejárt a visszafizetési határidő: {0} tartozása ({1}), {2} napja.": "Repayment overdue: {0} owes you {1}, {2} days ago.", "Ez egy kölcsönadáshoz tartozó mozgás. A Kintlévőség oldalon kezelheted.": "This movement belongs to money you lent. Manage it on the Owed to you page.", "Kölcsönadás": "Money lent", "Visszakapott": "Repaid", "A bal felső három csíkra koppintva nyílik az oldalsó menü: Áttekintés, Átvezetések, Megtakarítási célok, Hitel, Kintlévőség, Kategóriák, Éves és Havi kimutatás, Naptár.": "Tap the three lines at the top left to open the side menu: Overview, Transfers, Savings goals, Loan, Owed to you, Categories, Yearly and Monthly report, Calendar.", "Ha valaki tartozik neked, például kölcsönadtál neki, vedd fel az oldalsó menü Kintlévőség pontjában. A kölcsönadott összeg levonódik a kiválasztott számláról, a visszakapott pénz pedig visszakerül. Amíg van kintlévőséged, az Összes pénz kártyán külön is látszik.": "If someone owes you money, for example you lent it to them, add it in the Owed to you item of the side menu. The amount lent is deducted from the chosen account, and money you get back is added again. While money is owed to you, it also shows on the Total money card.", "Visszafizetési határidő: {0}": "Repayment deadline: {0}", "Határidő törlése": "Remove deadline", "Esedékes a(z) {0} tartozása: {1} ({2})": "Due: {0} owes you {1} ({2})", "Mentés ajánlott": "Backup recommended", "Utolsó mentés: {0} napja.": "Last backup: {0} days ago.", "Még nem készítettél mentést.": "You have not made a backup yet.", "Az adataid csak ezen a készüléken vannak, készíts mentést.": "Your data is only on this device, make a backup.", "Mentés készítése": "Make a backup", "Később": "Later", "Mentés fájlként": "Save as file", "Visszatöltés fájlból": "Restore from file", "Költségvetés mentés": "Budget backup", "Közelgő fizetések": "Upcoming payments", "Várható kötelezettségek a hónap végéig: {0}": "Expected obligations until the end of the month: {0}", "Becsült összes pénz a hónap végén: {0}": "Estimated total money at the end of the month: {0}", "A kintlévőségek visszafizetése nincs beleszámítva.": "Repayments of money owed to you are not included.", "Hátralék: {0} hónap ({1})": "Arrears: {0} months ({1})", "Elmaradt a(z) {0} törlesztése {1} hónapra: {2}.": "Missed payment for {0} for {1} months: {2}.", "Melyik hónapra?": "For which month?", "Befizetések": "Payments", "Visszavonás": "Undo", "Éves kamat (%, nem kötelező)": "Annual interest rate (%, optional)", "Ha megadod, az app becsüli a hátralévő tőkét és a kamatot.": "If you enter it, the app estimates the remaining principal and the interest.", "Éves kamat: {0}%": "Annual interest: {0}%", "A törlesztőrészlet nem fedezi a kamatot.": "The installment does not cover the interest.", "Becsült hátralévő kamat: {0} ({1} hónap)": "Estimated remaining interest: {0} ({1} months)", "Havi részlet (nem kötelező)": "Monthly payment (optional)", "Havi részlet: {0}": "Monthly payment: {0}", "Biztosan visszavonod ezt a visszatérítést? A pénz kikerül az egyenlegedből, a kintlévőség újra nő.": "Undo this repayment? The money leaves your balance and the amount owed to you grows again.", "Túl sok hibás próbálkozás. Próbáld újra {0} másodperc múlva.": "Too many wrong attempts. Try again in {0} seconds.", "A fájl mentése nem sikerült.": "Could not save the file.", "A fájl nem érvényes mentés.": "The file is not a valid backup.", "Biometrikus feloldás": "Biometric unlock", "Biometrikus feloldás (ujjlenyomat vagy arc)": "Biometric unlock (fingerprint or face)", "Biometrikus feloldás bekapcsolása": "Turn on biometric unlock", "Biometrikus feloldás kikapcsolása": "Turn off biometric unlock", "Biometrikus feloldás be van kapcsolva (Face ID, Touch ID vagy ujjlenyomat).": "Biometric unlock is on (Face ID, Touch ID or fingerprint).", "A biometrikus feloldás (Face ID, Touch ID, ujjlenyomat) ezen az eszközön vagy böngészőben nem érhető el.": "Biometric unlock (Face ID, Touch ID, fingerprint) is not available on this device or browser.", "Biometrikus feloldáshoz előbb állíts be PIN-t.": "Set a PIN first to use biometric unlock.", "A biometrikus azonosítás bekapcsolása nem sikerült.": "Could not turn on biometric authentication.", "A biometrikus azonosítás ezen az eszközön nem érhető el.": "Biometric authentication is not available on this device.", "Ezen az eszközön nincs beállított biometrikus azonosítás (ujjlenyomat vagy arc). Állítsd be a telefon beállításaiban.": "No biometric authentication (fingerprint or face) is set up on this device. Set it up in your phone settings.", "4 számjegyű PIN, az app megnyitásakor kéri. A PIN nem titkosítja az adataidat, csak az app megnyitását védi.": "4-digit PIN, requested when the app is opened. The PIN does not encrypt your data, it only protects opening the app.", "Tétel törölve.": "Item deleted.", "{0} tétel törölve.": "{0} items deleted.", "Gyors kiadás": "Quick expense", "Rögzítve: {0}": "Recorded: {0}", "Titkosított mentés": "Encrypted backup", "Adj meg egy jelszót a mentés titkosításához. Ha elfelejted, a mentés nem állítható vissza!": "Enter a password to encrypt the backup. If you forget it, the backup cannot be restored!", "Add meg a jelszót a titkosított mentés megnyitásához.": "Enter the password to open the encrypted backup.", "Jelszó": "Password", "Jelszó megerősítése": "Confirm password", "A jelszó legalább 6 karakter legyen.": "The password must be at least 6 characters.", "A két jelszó nem egyezik.": "The two passwords do not match.", "Hibás jelszó vagy sérült fájl.": "Wrong password or damaged file.", "Automatikus mentések": "Automatic backups", "A készülék naponta elmenti az adataid másolatát (az utolsó 7 napot). Ez véletlen törlés vagy hiba ellen véd, készülék elvesztése ellen nem, ahhoz használd a fájlmentést.": "The device saves a copy of your data every day (the last 7 days). This protects against accidental deletion or errors, not against losing the device, for that use the file backup.", "Még nincs automatikus mentés.": "No automatic backup yet.", "Biztosan visszaállítod ezt a mentést? A jelenlegi adatok felülíródnak.": "Restore this backup? Current data will be overwritten.", "Visszatöltés előtt": "Before restoring", "Törlés előtt": "Before deleting", "Betűméret": "Font size", "Normál": "Normal", "Nagy": "Large", "Nagyobb": "Larger", "Jelentés": "Report", "Havi jelentés": "Monthly report", "Éves jelentés": "Yearly report", "Összesítő": "Summary", "Hónap": "Month", "Arány": "Share", "Összesen": "Total", "Átlag": "Average", "Egyenleg": "Balance", "A jelentés készítése nem sikerült.": "Could not create the report.", "Automatikus mentések törlése": "Delete automatic backups", "Biztosan törlöd az összes automatikus mentést? Ez nem vonható vissza.": "Delete all automatic backups? This cannot be undone."};
+Object.assign(EN_D,{'Törlesztés napja':'Payment day','A hiteltörlesztő esedékességének napja. A naptárban válaszd ki ezt a napot, minden hónapban erre a napra esik majd a törlesztés.':'The due date of the loan installment. Pick this day in the calendar; the payment will fall on this day every month.'});
+Object.assign(EN_D,{'Hitel típusa':'Loan type','Áruhitel':'Retail installment loan','Személyi kölcsön':'Personal loan','Lakáshitel':'Mortgage','Autótörlesztő':'Car loan','Babaváró hitel':'Baby loan (Babaváró)','Diákhitel':'Student loan','Folyószámlahitel':'Overdraft','Hitelkártya':'Credit card','Szabad felhasználású jelzáloghitel':'Free-use mortgage loan','Lakásfelújítási hitel':'Home renovation loan','Lízing':'Leasing','Munkáltatói kölcsön':'Employer loan','Magánkölcsön':'Private loan (family or friends)'});
+Object.assign(EN_D,{'Elmaradt a(z) {0} törlesztése: {1}, {2} napja volt esedékes.':'Missed payment for {0}: {1}, due {2} days ago.'});
+const MNH=MN.slice(),WDH=WD.slice();
+const MNE=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WDE=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const EX={},RX=[];
+Object.keys(EN_D).forEach(k=>{
+  if(/\{\d\}/.test(k)){
+    const re=new RegExp('^'+k.replace(/[.*+?^$()|[\]\\]/g,'\\$&').replace(/\{\d\}/g,'([\\s\\S]+?)')+'$');
+    const tpl=EN_D[k];
+    RX.push([k.length,re,m=>tpl.replace(/\{(\d)\}/g,(_,i)=>trs(m[+i+1]))]);
+  }else EX[k]=EN_D[k];
+});
+RX.sort((a,b)=>b[0]-a[0]);
+function trCore(c){
+  if(Object.prototype.hasOwnProperty.call(EX,c))return EX[c];
+  for(let i=0;i<RX.length;i++){const m=RX[i][1].exec(c);if(m)return RX[i][2](m)}
+  if(c.indexOf('\n')>=0)return c.split('\n').map(trCore).join('\n');
+  return c;
+}
+function trs(s){
+  const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(s);if(!m[2])return s;
+  const r=trCore(m[2]);return r===m[2]?s:m[1]+r+m[3];
+}
+const AT=['placeholder','aria-label','title'];
+function skipNode(n){const p=n.parentNode;return !p||/^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName)}
+function trNode(n){
+  if(skipNode(n))return;
+  if(n.__o===undefined||(n.nodeValue!==n.__t&&n.nodeValue!==n.__o))n.__o=n.nodeValue;
+  const out=LANG==='en'?trs(n.__o):n.__o;
+  n.__t=out;if(n.nodeValue!==out)n.nodeValue=out;
+}
+function trAttrs(e){
+  AT.forEach(a=>{
+    if(!e.hasAttribute||!e.hasAttribute(a))return;
+    const k='__o_'+a,cur=e.getAttribute(a);
+    if(e[k]===undefined||(cur!==e[k+'t']&&cur!==e[k]))e[k]=cur;
+    const out=LANG==='en'?trs(e[k]):e[k];
+    e[k+'t']=out;if(cur!==out)e.setAttribute(a,out);
+  });
+}
+function trTree(root){
+  if(root.nodeType===3){trNode(root);return}
+  if(root.nodeType!==1)return;
+  trAttrs(root);
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);
+  let n;while(n=w.nextNode()){if(n.nodeType===3)trNode(n);else trAttrs(n)}
+}
+function setLangArrays(){
+  const en=LANG==='en';
+  MN.splice(0,12,...(en?MNE:MNH));WD.splice(0,7,...(en?WDE:WDH));
+  document.documentElement.lang=en?'en':'hu';document.title=en?'Budget':'Költségvetés';
+}
+function setLang(v){LANG=v==='en'?'en':'hu';setLangArrays();trTree(document.body);render()}
+function langShow(){
+  const el=$('#lg');el.hidden=false;
+  el.innerHTML='<div class="cbox" role="dialog"><p style="font-weight:700;font-size:19px">Nyelv / Language</p><div style="display:flex;flex-direction:column;gap:8px;margin-top:12px"><button class="pri" data-a="setlang" data-v="hu">Magyar</button><button class="ghost" data-a="setlang" data-v="en">English</button></div></div>';
+}
+let NEWQ=new URLSearchParams(location.search).get('new')||'';
+function startFlow(){if(!S.lang){langShow();return}if(!S.tutDone){tutShow();return}if(NEWQ){const t=NEWQ;NEWQ='';if(t==='out'||t==='in')openSheet(null,null,t,true);else if(t==='tr')openSheet(null,null,'tr',false)}}
+function i18nInit(){
+  LANG=S.lang==='en'?'en':'hu';setLangArrays();
+  new MutationObserver(ms=>{ms.forEach(m=>{
+    if(m.type==='childList')m.addedNodes.forEach(trTree);
+    else if(m.type==='characterData')trNode(m.target);
+    else if(m.type==='attributes')trAttrs(m.target);
+  })}).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});
+  trTree(document.body);
+}
+i18nInit();applyRec();render();if(!snapList().some(x=>x.d===isoD(now)&&!x.l))snapNow('');if(S.pin){lockShow();if(S.bio)setTimeout(bioUnlock,400)}else startFlow();bioDetect();
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
 </body>

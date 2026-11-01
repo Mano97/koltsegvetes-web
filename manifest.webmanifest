@@ -18,5 +18,40 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Új kiadás",
+      "short_name": "Kiadás",
+      "url": "./?new=out",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Új bevétel",
+      "short_name": "Bevétel",
+      "url": "./?new=in",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Átvezetés",
+      "short_name": "Átvezetés",
+      "url": "./?new=tr",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
