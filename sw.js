@@ -1,4 +1,4 @@
-const V = 'kv-v35';
+const V = 'kv-v37';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -30,8 +30,3 @@ self.addEventListener('fetch', e => {
   }
   e.respondWith(
     caches.match(req).then(r => r || fetch(req).then(res => {
-      if (res.ok && same) { const cp = res.clone(); caches.open(V).then(c => c.put(req, cp)); }
-      return res;
-    }))
-  );
-});
