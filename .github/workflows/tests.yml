@@ -40,7 +40,7 @@ jobs:
           NOW = datetime(2026, 11, 20, 10, 0, 0)
 
           BASE = {'cats': [{'id': 'k1', 'name': 'Étel', 'items': [{'id': 'i1', 'name': 'Kávé'}]}], 'icats': [{'id': 'n1', 'name': 'Fizetés'}],
-                  'tx': [], 'lang': 'hu', 'tutDone': True, 'initDone': True, 'fxOn': True, 'theme': 'dark', 'open': {'cash': 50000, 'card': 100000}}
+                  'tx': [], 'lang': 'hu', 'tutDone': True, 'initDone': True, 'fxOn': True, 'voiceOn': True, 'scanOn': True, 'theme': 'dark', 'open': {'cash': 50000, 'card': 100000}}
 
 
           @pytest.fixture(scope='session')
@@ -88,9 +88,10 @@ jobs:
               page.fill('#i-c', '45000')
               page.fill('#i-k', '250000')
               page.click('[data-a=initsave]')
-              assert 'Devizaszámla' in page.inner_text('#tu h3')
-              page.click('[data-a=fxno]')
-              assert page.evaluate('[S.open.cash, S.open.card, S.initDone, HUFS.fxOn]') == [45000, 250000, True, False]
+              assert 'Opcionális funkciók' in page.inner_text('#tu h3')
+              assert page.locator('#tu input[type=checkbox]').count() == 3
+              page.click('[data-a=featok]')
+              assert page.evaluate('[S.open.cash, S.open.card, S.initDone, HUFS.fxOn, !!HUFS.voiceOn, !!HUFS.scanOn]') == [45000, 250000, True, False, False, False]
               page.reload()
               page.wait_for_timeout(300)
               assert not page.is_visible('#tu') and not page.is_visible('#lg')
@@ -561,5 +562,66 @@ jobs:
               assert page.input_value('#nqs') == 'Spar'
               page.click('[data-a=nqcancel]')
               assert not page.is_visible('#sh')
+
+
+          def test_receipt_total_lines_are_not_items(page):
+              boot(page, RCAT)
+              pr = lambda s: page.evaluate('s => parseReceipt(s, new Date(2026,10,20))', s)
+              r = pr('Tesco Global Zrt.\n2026.11.10\nTej 1l  329\nKenyér  459\nSajt  1 299\nSZUMMA  2 087\nKártyás fizetés  2 087')
+              assert (len(r['items']), r['total'], r['sum']) == (3, 2087, 2087)
+              r = pr('Auchan Magyarország\n2026.11.11\nZsemle  45\nTej  329\nAlma 1kg  459\nVégszámla  833\nBankkártya  833')  # ismeretlen címke: számtani ellenőrzés
+              assert [i['amt'] for i in r['items']] == [45, 329, 459] and r['total'] == 833
+              r = pr('Coop\n2026.11.12\nKenyér  459\nSör  249\nÖsszesen  708\nKapott  1 000\nVisszajáró  292')
+              assert [i['amt'] for i in r['items']] == [459, 249] and r['total'] == 708
+              r = pr('Spar\n2026.11.13\nTej  329\nKenyér  459\nBRUTTÓ ÖSSZEG  788\nNettó  620\nÁFA 27%  168')
+              assert [i['amt'] for i in r['items']] == [329, 459] and r['total'] == 788
+
+
+          def test_voice_and_scan_are_optional(page):
+              boot(page, dict(BASE, voiceOn=False, scanOn=False))
+              page.click('.fab')
+              t = page.inner_text('#cf')
+              assert 'Nyugta' not in t and 'Hangos' not in t  # kikapcsolva nem jelenik meg
+              page.click('[data-a=no]')
+              page.click('#gear')
+              page.evaluate("[...document.querySelectorAll('details.grp')].forEach(d=>d.open=true)")
+              assert 'Funkciók' in page.inner_text('details[data-g=acc] summary')
+              page.click('[data-a=scantoggle]')
+              assert page.evaluate('HUFS.scanOn') is True
+              page.evaluate("document.querySelector('[data-a=voicetoggle]')&&0")
+              page.click('#homebtn')
+              page.click('.fab')
+              t = page.inner_text('#cf')
+              assert 'Nyugta fotózása' in t and 'Nyugta szövegének beillesztése' in t
+              page.click('[data-a=no]')
+              page.click('#nav [data-v=out]')
+              page.click('.fab')
+              assert page.is_visible('[data-a=nqscan]')
+              page.click('[data-a=close]')
+              # kikapcsolás: az új tétel lapról is eltűnik
+              page.click('#gear')
+              page.evaluate("[...document.querySelectorAll('details.grp')].forEach(d=>d.open=true)")
+              page.click('[data-a=scantoggle]')
+              page.click('#nav [data-v=out]')
+              page.click('.fab')
+              assert not page.is_visible('[data-a=nqscan]')
+
+
+          def test_tutorial_is_short_and_covers_new_features(page):
+              boot(page)
+              page.click('[data-a=setlang][data-v=hu]')
+              titles, n = [], 0
+              while page.is_visible('[data-a=tnext]') and n < 30:
+                  titles.append(page.inner_text('#tu h3'))
+                  if page.inner_text('[data-a=tnext]').strip() == 'Kezdjük':
+                      break
+                  page.click('[data-a=tnext]')
+                  n += 1
+              assert len(titles) == 14
+              joined = ' | '.join(titles)
+              for k in ['Kategóriák', 'Hangos bevitel (opcionális)', 'Nyugta beolvasása (opcionális)', 'Rendszeres kifizetések', 'Devizaszámla (opcionális)', 'Biztonság és mentés']:
+                  assert k in joined
+              lens = page.evaluate("TUT.map(x=>x[1].length)")
+              assert max(lens) <= 330  # lényegre törő: egy dia legfeljebb pár rövid mondat
           PYEOF
           pytest tests -q
