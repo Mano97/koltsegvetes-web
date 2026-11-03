@@ -1,1 +1,565 @@
+name: Webes tesztek
 
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Eszközök telepítése
+        run: |
+          pip install pytest playwright
+          playwright install --with-deps chromium
+
+      - name: Tesztek futtatása (index.html ellen)
+        run: |
+          mkdir -p tests
+          cat > tests/test_web.py <<'PYEOF'
+          """Automatikus tesztek a Költségvetés webes változatához.
+          Futtatás: pip install pytest playwright && playwright install chromium && pytest tests
+          A tesztelt fájl: az index.html (vagy a KV_HTML környezeti változóban megadott fájl)."""
+          import json
+          import os
+          import pathlib
+          from datetime import datetime
+
+          import pytest
+          from playwright.sync_api import sync_playwright
+
+          HTML = pathlib.Path(os.environ.get('KV_HTML', 'index.html')).resolve()
+          URL = HTML.as_uri()
+          NOW = datetime(2026, 11, 20, 10, 0, 0)
+
+          BASE = {'cats': [{'id': 'k1', 'name': 'Étel', 'items': [{'id': 'i1', 'name': 'Kávé'}]}], 'icats': [{'id': 'n1', 'name': 'Fizetés'}],
+                  'tx': [], 'lang': 'hu', 'tutDone': True, 'initDone': True, 'fxOn': True, 'theme': 'dark', 'open': {'cash': 50000, 'card': 100000}}
+
+
+          @pytest.fixture(scope='session')
+          def browser():
+              with sync_playwright() as p:
+                  b = p.chromium.launch()
+                  yield b
+                  b.close()
+
+
+          @pytest.fixture()
+          def page(browser):
+              ctx = browser.new_context(viewport={'width': 390, 'height': 844})
+              pg = ctx.new_page()
+              pg.errors = []
+              pg.on('pageerror', lambda e: pg.errors.append(str(e)))
+              pg.clock.install(time=NOW)
+              yield pg
+              ctx.close()
+              assert not pg.errors, pg.errors
+
+
+          def boot(pg, state=None, fx=None):
+              pg.goto(URL)
+              pg.wait_for_timeout(250)
+              if state is not None:
+                  pg.evaluate("s => localStorage.setItem('kv1', JSON.stringify(s))", state)
+                  if fx is not None:
+                      pg.evaluate("s => localStorage.setItem('kv_fx', JSON.stringify(s))", fx)
+                  pg.reload()
+                  pg.wait_for_timeout(350)
+
+
+          def tx(i, ty, acc, amt, cat, item, date):
+              return {'id': i, 'type': ty, 'acc': acc, 'amt': amt, 'cat': cat, 'item': item, 'date': date, 'note': ''}
+
+
+          def test_first_run_flow(page):
+              boot(page)
+              page.click('[data-a=setlang][data-v=hu]')
+              while page.is_visible('[data-a=tnext]') and page.inner_text('[data-a=tnext]').strip() != 'Kezdjük':
+                  page.click('[data-a=tnext]')
+              page.click('[data-a=tnext]')
+              assert 'Kezdő értékek' in page.inner_text('#tu h3')
+              page.fill('#i-c', '45000')
+              page.fill('#i-k', '250000')
+              page.click('[data-a=initsave]')
+              assert 'Devizaszámla' in page.inner_text('#tu h3')
+              page.click('[data-a=fxno]')
+              assert page.evaluate('[S.open.cash, S.open.card, S.initDone, HUFS.fxOn]') == [45000, 250000, True, False]
+              page.reload()
+              page.wait_for_timeout(300)
+              assert not page.is_visible('#tu') and not page.is_visible('#lg')
+              assert page.locator('.hero2').count() == 1
+
+
+          def test_start_card_and_empty_state(page):
+              boot(page, BASE)
+              assert 'Kezdjük el!' in page.inner_text('#v')
+              page.click('#nav [data-v=out]')
+              assert 'Még nincs tétel' in page.inner_text('#v')
+              page.click('#v [data-a=add]')
+              assert page.is_visible('#sh')
+
+
+          def test_exchange_both_directions(page):
+              boot(page, BASE)
+              page.click('[data-a=ws][data-v=fx]')
+              page.select_option('#wsel', 'add:EUR')
+              page.wait_for_timeout(150)
+              page.fill('#i-c', '10')
+              page.fill('#i-k', '5')
+              page.click('[data-a=initsave]')
+              page.click('[data-a=ws][data-v=huf]')
+              page.click('#burger')
+              page.click('#dxch')
+              page.click('[data-a=xsrc][data-v=cash]')
+              page.click('[data-a=xdst][data-v=card]')
+              page.fill('#xa', '600')
+              page.fill('#xr', '300')
+              assert 'Megkapod: 2,00 EUR' in page.inner_text('#xp')
+              page.click('[data-a=xdo]')
+              page.wait_for_timeout(150)
+              assert page.evaluate("[balIn(HUFS,'cash'), balIn(FXD.curs.EUR,'card')]") == [49400, 7]
+              page.click('#nav [data-v=out]')
+              text = page.inner_text('#v')
+              assert 'Átváltás: HUF → EUR' in text and 'Vásárolt: 2,00 EUR' in text and 'Árfolyam: 1 EUR = 300 Ft' in text
+              # fordítva
+              page.click('#homebtn')
+              page.click('#burger')
+              page.click('#dxch')
+              page.click('[data-a=xdir][data-v=f2h]')
+              page.click('[data-a=xsrc][data-v=card]')
+              page.click('[data-a=xdst][data-v=cash]')
+              page.fill('#xa', '3.5')
+              page.fill('#xr', '312.5')
+              assert '1094' in page.inner_text('#xp')
+              page.click('[data-a=xdo]')
+              page.wait_for_timeout(150)
+              assert page.evaluate("[balIn(HUFS,'cash'), balIn(FXD.curs.EUR,'card')]") == [50494, 3.5]
+              # törlés mindkét oldalról
+              page.click('#burger')
+              page.click('#dr [data-v=tr]')
+              page.locator('.row').first.click()
+              page.click('[data-a=yes]')
+              page.wait_for_timeout(150)
+              assert page.evaluate("S.tx.filter(t=>t.xid).length + FXD.curs.EUR.tx.filter(t=>t.xid).length") == 2
+
+
+          def test_backup_integrity(page):
+              boot(page, dict(BASE, tx=[tx('a', 'in', 'card', 450000, 'n1', '', '2026-11-05'), tx('b', 'out', 'cash', 800, 'k1', 'i1', '2026-11-12')]))
+              j = page.evaluate('dataJson()')
+              o = json.loads(j)
+              assert o['schema'] == 3 and o['chk']
+              assert page.evaluate('o => backupProblem(o)', o) == ''
+              bad = json.loads(j)
+              bad['tx'][0]['amt'] = 1
+              assert page.evaluate('o => backupProblem(o)', bad) == 'chk'
+              newer = json.loads(j)
+              newer['schema'] = 99
+              assert page.evaluate('o => backupProblem(o)', newer) == 'newer'
+              broken = json.loads(j)
+              broken['tx'] = 'x'
+              assert page.evaluate('o => backupProblem(o)', broken) == 'invalid'
+              badtx = json.loads(j)
+              badtx['tx'][0]['date'] = 'tegnap'
+              assert page.evaluate('o => backupProblem(o)', badtx) in ('invalid', 'chk')
+              # visszatöltés
+              page.evaluate('S.tx=[];save();render()')
+              page.evaluate('j => importText(j)', j)
+              page.click('[data-a=yes]')
+              page.wait_for_timeout(200)
+              assert page.evaluate('S.tx.length') == 2
+              assert page.evaluate("balIn(S,'card')") == 550000
+
+
+          def test_old_exchange_types_are_migrated(page):
+              boot(page, BASE)
+              old = dict(BASE, tx=[dict(tx('x1', 'xout', 'cash', 600, '', '', '2026-11-02'), xid='e1', xc='EUR', xr=300, xo=2)],
+                         fxData={'curs': {'EUR': dict(BASE, tx=[dict(tx('x2', 'xin', 'card', 2, '', '', '2026-11-02'), xid='e1', xc='HUF', xr=300, xo=600)])}, 'sel': 'EUR'})
+              page.evaluate('j => importText(j)', json.dumps(old))
+              page.click('[data-a=yes]')
+              page.wait_for_timeout(250)
+              assert page.evaluate("S.tx.map(t=>t.type+':'+t.cat)") == ['out:xch']
+              assert page.evaluate("FXD.curs.EUR.tx.map(t=>t.type+':'+t.cat)") == ['in:xch']
+
+
+          def test_loan_and_receivable(page):
+              boot(page, BASE)
+              page.click('#burger')
+              page.click('#dr [data-v=loan]')
+              page.click('[data-a=lnnew]')
+              page.select_option('#ln-n', 'Személyi kölcsön')
+              page.fill('#ln-t', '600000')
+              page.fill('#ln-p', '30000')
+              page.fill('#ln-d', '2026-11-25')
+              page.fill('#ln-e', '2028-12')
+              page.click('[data-a=lnsave]')
+              page.click('[data-a=lnpay]')
+              page.click('[data-a=lnpayok]')
+              page.wait_for_timeout(100)
+              assert page.evaluate('lnRem(S.loans[0])') == 570000
+              page.click('#burger')
+              page.click('#dr [data-v=recv]')
+              page.click('[data-a=rcnew]')
+              page.fill('#rc-n', 'Péter')
+              page.fill('#rc-t', '20000')
+              page.click('[data-a=rcsave]')
+              page.wait_for_timeout(100)
+              assert page.evaluate('rcSum()') == 20000
+
+
+          def test_list_pagination_and_delete_undo(page):
+              many = [tx('t%d' % i, 'out', 'card', 100 + i, 'k1', 'i1', '2026-11-%02d' % (1 + i % 20)) for i in range(250)]
+              boot(page, dict(BASE, tx=many))
+              page.click('#nav [data-v=out]')
+              assert page.locator('.row').count() == 80
+              assert 'Továbbiak megjelenítése (170)' in page.inner_text('[data-a=more]')
+              page.click('[data-a=more]')
+              assert page.locator('.row').count() == 160
+              n = page.evaluate('S.tx.length')
+              page.locator('.row[data-a=edit]').first.click()
+              page.click('[data-a=del]')
+              assert page.evaluate('S.tx.length') == n - 1
+              page.click('[data-a=toastundo]')
+              assert page.evaluate('S.tx.length') == n
+
+
+          def test_category_colors(page):
+              boot(page, dict(BASE, tx=[tx('b', 'out', 'cash', 800, 'k1', 'i1', '2026-11-12')]))
+              cols = page.evaluate('S.cats.map(c=>c.color)')
+              assert cols[0].startswith('#')
+              page.click('#burger')
+              page.click('#dr [data-v=catm]')
+              page.locator('[data-a=catcol][data-v=k1]').click()
+              page.locator('.cs[data-v="#D32F2F"]').click()
+              assert page.evaluate("S.cats[0].color") == '#D32F2F'
+              page.click('#nav [data-v=out]')
+              assert page.evaluate("document.querySelector('.row .ico').style.getPropertyValue('--c')") == '#D32F2F'
+
+
+          def test_foreign_currency_is_optional(page):
+              boot(page, dict(BASE, fxOn=False))
+              assert page.locator('#ws button').count() == 0
+              page.click('#burger')
+              assert not page.is_visible('#dxch') and not page.is_visible('#dfxadd')
+              page.evaluate("document.getElementById('dr').hidden=true")
+              page.click('#gear')
+              page.evaluate("[...document.querySelectorAll('details.grp')].forEach(d=>d.open=true)")
+              page.click('[data-a=fxtoggle]')
+              assert page.is_visible('[data-a=ws][data-v=fx]')
+
+
+          def test_error_log_and_report(page):
+              boot(page, BASE)
+              page.evaluate("window.dispatchEvent(new ErrorEvent('error',{message:'teszt hiba',filename:'x.js',lineno:1}))")
+              page.errors.clear()  # a szándékos hiba ne bukassa a tesztet
+              assert any('teszt hiba' in x['m'] for x in page.evaluate('errList()'))
+              page.click('#gear')
+              page.evaluate("[...document.querySelectorAll('details.grp')].forEach(d=>d.open=true)")
+              assert 'Hiba jelentése' in page.inner_text('details[data-g=help]')
+
+
+          def test_delayed_save_survives_reload(page):
+              boot(page, BASE)
+              page.click('#nav [data-v=out]')
+              page.click('.fab')
+              page.click('[data-a=addpick][data-v=out]') if page.is_visible('[data-a=addpick]') else None
+              page.fill('#fa', '1234')
+              page.keyboard.press('Enter')
+              page.reload()
+              page.wait_for_timeout(300)
+              assert page.evaluate('S.tx.length') == 1
+
+
+          def test_theme_and_hide_balance(page):
+              boot(page, BASE)
+              page.click('[data-a=eye]')
+              assert page.inner_text('.hero2 .tot').strip() == '••••'
+              page.click('[data-a=eye]')
+              page.click('#burger')
+              page.click('#thm')
+              assert page.evaluate('S.theme') == 'light'
+
+
+          VOICE = dict(BASE, cats=[{'id': 'k1', 'name': 'Étel', 'items': [{'id': 'i1', 'name': 'Kávé'}, {'id': 'i2', 'name': 'Bevásárlás'}]},
+                                   {'id': 'k2', 'name': 'Közlekedés', 'items': [{'id': 'i3', 'name': 'Tankolás'}]}])
+
+
+          def test_voice_parser(page):
+              boot(page, VOICE)
+              p = lambda s: page.evaluate('s => parseVoice(s)', s)
+              r = p('kávé ezerkétszáz forint')
+              assert (r['amt'], r['cat'], r['item'], r['type']) == (1200, 'k1', 'i1', 'out')
+              assert p('kávé 1200 forint')['amt'] == 1200
+              assert p('Tankolás tizenötezer')['amt'] == 15000
+              assert p('tankolás tizenötezer')['item'] == 'i3'
+              assert p('egy kávé 800 ft')['amt'] == 800
+              assert p('bevásárlás háromezer-ötszáz forint')['amt'] == 3500
+              assert p('bevásárlás 1 200 forint')['amt'] == 1200
+              assert p('valami 1,5 millió')['amt'] == 1500000
+              r = p('fizetés 450 ezer')
+              assert (r['type'], r['amt'], r['cat']) == ('in', 450000, 'n1')
+              r = p('ajándék Marinak 5000')
+              assert r['amt'] == 5000 and 'ajándék' in r['note']
+
+
+          def test_templates(page):
+              boot(page, VOICE)
+              page.click('#nav [data-v=out]')
+              page.click('.fab')
+              page.fill('#fa', '1200')
+              page.select_option('#fi', 'i1')
+              page.check('#ftp')
+              page.click('[data-a=save]')
+              page.wait_for_timeout(100)
+              assert page.evaluate('S.tpl.length') == 1
+              page.click('#homebtn')
+              assert 'Sablonok' in page.inner_text('#v')
+              n = page.evaluate('S.tx.length')
+              page.click('[data-a=tplgo]')
+              assert page.evaluate('S.tx.length') == n + 1
+              page.click('[data-a=toastundo]')
+              assert page.evaluate('S.tx.length') == n
+              page.click('[data-a=tpledit]')
+              page.click('[data-a=tpldel]')
+              assert page.evaluate('S.tpl.length') == 0
+
+
+          def test_tags_filter_and_photo(page):
+              boot(page, VOICE)
+              page.click('#nav [data-v=out]')
+              page.click('.fab')
+              page.fill('#fa', '5000')
+              page.fill('#ftg', 'nyaralás, ajándék')
+              png = bytes.fromhex('89504e470d0a1a0a0000000d4948445200000001000000010806000000'
+                                  '1f15c4890000000d49444154789c6360000002000001e221bc330000000049454e44ae426082')
+              page.set_input_files('#fph', {'name': 'x.png', 'mimeType': 'image/png', 'buffer': png})
+              page.wait_for_timeout(300)
+              assert page.evaluate('f.ph') is True
+              page.click('[data-a=save]')
+              page.wait_for_timeout(300)
+              assert page.evaluate("S.tx[0].tags") == ['nyaralás', 'ajándék'] and page.evaluate('S.tx[0].ph') is True
+              assert page.evaluate("phGet(S.tx[0].id).then(b=>b&&b.size>0)") is True
+              text = page.inner_text('#v')
+              assert '#nyaralás' in text and '📎' in text
+              page.select_option('#ftg2', 'ajándék')
+              assert page.locator('.row').count() == 1
+              page.select_option('#ftg2', '')
+              # a szerkesztésnél a fotó megjelenik, törölhető
+              page.locator('.row[data-a=edit]').first.click()
+              page.wait_for_timeout(200)
+              assert page.evaluate("!!document.getElementById('phimg').src")
+              page.click('[data-a=phdel]')
+              page.click('[data-a=save]')
+              page.wait_for_timeout(300)
+              assert not page.evaluate('S.tx[0].ph')
+              assert page.evaluate("phGet(S.tx[0].id)") is None
+
+
+          def test_month_report_and_card(page):
+              st = dict(VOICE, tx=[tx('a', 'in', 'card', 450000, 'n1', '', '2026-11-05'), tx('b', 'out', 'card', 100000, 'k1', 'i2', '2026-11-08'),
+                                   tx('c', 'out', 'cash', 20000, 'k2', 'i3', '2026-11-09'), tx('d', 'out', 'card', 150000, 'k1', 'i2', '2026-10-08'), tx('e', 'in', 'card', 400000, 'n1', '', '2026-10-05')])
+              boot(page, st)
+              r = page.evaluate('monthReport(2026,10)')
+              assert (r['inc'], r['out'], r['saved']) == (450000, 120000, 330000)
+              assert r['top'][0][0] == 'k1' and r['big']['amt'] == 100000
+              assert round(r['delta']) == -20
+              assert 'Havi összefoglaló' not in page.inner_text('#v')  # a hónap közepén nincs kártya
+              ctx2 = page.context.browser.new_context(viewport={'width': 390, 'height': 844})
+              pg2 = ctx2.new_page()
+              pg2.clock.install(time=datetime(2026, 11, 29, 10, 0, 0))
+              pg2.goto(URL)
+              pg2.evaluate("s => localStorage.setItem('kv1', JSON.stringify(s))", st)
+              pg2.reload()
+              pg2.wait_for_timeout(300)
+              assert 'Havi összefoglaló · November 2026' in pg2.inner_text('#v')
+              pg2.click('[data-a=rptopen]')
+              t = pg2.inner_text('#cf')
+              assert 'Félretett összeg' in t and 'Étel' in t and '20%-kal kevesebbet' in t
+              pg2.click('[data-a=no]')
+              pg2.click('[data-a=rptno]')
+              assert 'Havi összefoglaló · November' not in pg2.inner_text('#v')
+              ctx2.close()
+
+
+          def test_recurring_suggestion(page):
+              nf = dict(VOICE, cats=VOICE['cats'] + [{'id': 'k3', 'name': 'Streaming', 'items': [{'id': 'i9', 'name': 'Netflix'}]}])
+              txs = [tx('n1', 'out', 'card', 4490, 'k3', 'i9', '2026-09-12'), tx('n2', 'out', 'card', 4490, 'k3', 'i9', '2026-10-12'), tx('n3', 'out', 'card', 4500, 'k3', 'i9', '2026-11-12'),
+                     tx('z1', 'out', 'cash', 800, 'k1', 'i1', '2026-11-05')]
+              boot(page, dict(nf, tx=txs))
+              c = page.inner_text('#v')
+              assert 'Netflix havonta ismétlődik' in c
+              page.click('[data-a=recyes]')
+              assert page.evaluate('S.rec.length') == 1 and page.evaluate('S.rec[0].day') == 12
+              assert page.evaluate('S.tx.length') == 4  # nem keletkezik duplikált tétel
+              assert 'ismétlődik' not in page.inner_text('#v')
+              # elutasítás megjegyződik
+              boot(page, dict(nf, tx=txs))
+              page.click('[data-a=recno]')
+              page.reload()
+              page.wait_for_timeout(300)
+              assert 'ismétlődik' not in page.inner_text('#v')
+
+
+          RECEIPTS = {
+              'lidl': """LIDL Magyarország Kereskedelmi Bt.
+          1138 Budapest, Váci út 117.
+          Adószám: 22234160-2-44
+          NYUGTA
+          TEJ 2,8% 1L              329 A
+          KENYER FEHER 500G        459 A
+          BANAN 0,852 kg x 599     510 A
+          SAJT TRAPPISTA         1 299 A
+          WC PAPIR 8DB           1 499 B
+          KEDVEZMENY               -200
+          ÖSSZESEN               3 896
+          BANKKARTYA             3 896
+          2026.11.03  14:22""",
+              'mol': """MOL Nyrt. 1117 Budapest
+          2026-11-05 08:15
+          95-ös benzin    32,45 l    20 087 Ft
+          Snickers        1 db       399 Ft
+          Fizetendő:      20 486 Ft
+          Bankkártya      20 486 Ft""",
+              'spar': """SPAR Magyarország Kft.
+          2026.11.07 17:40
+          Coca-Cola 2L
+            2 x 599           1 198
+          Tojás 10 db
+            1 x 899             899
+          Végösszeg           2 097""",
+              'penny': """Penny Market Kft
+          2026.11.09
+          Alma 1kg  459
+          Sör 0,5l  249
+          Kerekítés  -1
+          FIZETENDŐ 707""",
+              'noisy': """rossmann magyarorszag kft
+          07.11.2026
+          FOGKREM COLGATE   1 099,00
+          SAMPON            1.499
+          OSSZESEN          2 598""",
+          }
+          RCAT = dict(BASE, cats=[{'id': 'k1', 'name': 'Élelmiszer', 'items': [{'id': 'i1', 'name': 'Tej'}]},
+                                  {'id': 'k2', 'name': 'Közlekedés', 'items': []},
+                                  {'id': 'k3', 'name': 'Háztartás', 'items': []}])
+
+
+          def test_receipt_parser(page):
+              boot(page, RCAT)
+              pr = lambda k: page.evaluate('s => parseReceipt(s, new Date(2026,10,20))', RECEIPTS[k])
+              r = pr('lidl')
+              assert (r['store'], r['date'], r['total'], len(r['items']), r['sum']) == ('Lidl', '2026-11-03', 3896, 5, 3896)
+              assert [i['amt'] for i in r['items']] == [329, 459, 510, 1299, 1299]  # a kedvezmény az előző tételből vonódik le
+              assert r['items'][2]['name'] == 'Banan'
+              r = pr('mol')
+              assert (r['store'], r['date'], r['total'], len(r['items'])) == ('MOL', '2026-11-05', 20486, 2)
+              r = pr('spar')
+              assert (r['store'], r['total'], [i['amt'] for i in r['items']]) == ('Spar', 2097, [1198, 899])
+              r = pr('penny')
+              assert (r['store'], r['total'], len(r['items'])) == ('Penny', 707, 2) and abs(r['diff']) <= 1
+              r = pr('noisy')
+              assert (r['store'], r['date'], r['total'], [i['amt'] for i in r['items']]) == ('Rossmann', '2026-11-07', 2598, [1099, 1499])
+              assert page.evaluate("nqNum('1 299')") == 1299 and page.evaluate("nqNum('1.299')") == 1299 and page.evaluate("nqNum('1 099,00')") == 1099
+
+
+          def test_receipt_single_booking_and_detail(page):
+              boot(page, RCAT)
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', RECEIPTS['lidl'])
+              assert page.evaluate('NQ.single') is True and page.evaluate('NQ.cat') == 'k1'
+              assert page.is_visible('#nqcat') and page.locator('.nqc').count() == 0
+              page.locator('.nqon').nth(2).uncheck()  # a banán kikapcsolva
+              assert 'Elkönyvelés (1)' in page.inner_text('#nqsv')
+              n = page.evaluate('S.tx.length')
+              page.click('#nqsv')
+              page.wait_for_timeout(150)
+              assert page.evaluate('S.tx.length') == n + 1
+              # visszavonás
+              page.click('[data-a=toastundo]')
+              assert page.evaluate('S.tx.length') == n
+              # újra, most véglegesen
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', RECEIPTS['lidl'])
+              page.locator('.nqon').nth(2).uncheck()
+              page.click('#nqsv')
+              page.wait_for_timeout(150)
+              t = page.evaluate('S.tx[S.tx.length-1]')
+              assert (t['amt'], t['cat'], t['date'], t['acc'], t['tags'], t['rs']) == (3386, 'k1', '2026-11-03', 'card', ['nyugta'], 'Lidl')
+              assert [x['n'] for x in t['rl']] == ['Tej 2,8% 1l', 'Kenyer feher 500g', 'Sajt trappista', 'Wc papir'] and sum(x['a'] for x in t['rl']) == 3386
+              # a listában egy kiadás, rányomva a nyugta tételei látszanak
+              page.click('#nav [data-v=out]')
+              assert '🧾 4 tétel' in page.inner_text('#v')
+              page.locator('.row[data-a=edit]', has_text='Lidl').first.click()
+              d = page.inner_text('#cf')
+              assert 'Tej 2,8% 1l' in d and 'Wc papir' in d and 'Összesen' in d and 'Lidl' in d and '#nyugta' in d
+              # szerkesztés megőrzi a tételeket
+              page.click('[data-a=nqdedit]')
+              assert page.is_visible('#sh')
+              page.fill('#fa', '3400')
+              page.click('[data-a=save]')
+              page.wait_for_timeout(150)
+              t = page.evaluate('S.tx[S.tx.length-1]')
+              assert t['amt'] == 3400 and len(t['rl']) == 4 and t['rs'] == 'Lidl'
+              # törlés a részletes nézetből, visszavonással
+              page.locator('.row[data-a=edit]', has_text='Lidl').first.click()
+              page.click('[data-a=nqddel]')
+              assert page.evaluate('S.tx.filter(t=>t.rl).length') == 0
+              page.click('[data-a=toastundo]')
+              assert page.evaluate('S.tx.filter(t=>t.rl).length') == 1
+              # tanulás: az üzlet a legutóbbi kategóriát javasolja
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', RECEIPTS['lidl'])
+              page.select_option('#nqcat', 'k2')
+              page.click('#nqsv')
+              page.wait_for_timeout(100)
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', RECEIPTS['lidl'])
+              assert page.evaluate('NQ.cat') == 'k2'
+
+
+          def test_receipt_split_mode(page):
+              boot(page, RCAT)
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', RECEIPTS['lidl'])
+              page.uncheck('#nqsg')  # tételenkénti szétbontás (haladó)
+              assert page.locator('.nqc').count() == 5 and not page.is_visible('#nqcat')
+              cats = page.evaluate("NQ.lines.map(l=>l.name+':'+l.cat)")
+              assert 'Tej 2,8% 1l:k1' in cats and 'Wc papir:k3' in cats
+              page.locator('.nqon').nth(2).uncheck()
+              page.locator('.nqc').nth(1).select_option('k2')
+              assert 'Elkönyvelés (4)' in page.inner_text('#nqsv')
+              n = page.evaluate('S.tx.length')
+              page.click('#nqsv')
+              page.wait_for_timeout(150)
+              assert page.evaluate('S.tx.length') == n + 4
+              new = page.evaluate("S.tx.slice(-4).map(t=>[t.amt,t.cat,t.note,!!t.rl])")
+              assert [x[0] for x in new] == [329, 459, 1299, 1299] and new[1][1] == 'k2' and not any(x[3] for x in new)
+
+
+          def test_receipt_difference(page):
+              boot(page, RCAT)
+              txt = RECEIPTS['lidl'].replace('ÖSSZESEN               3 896', 'ÖSSZESEN               4 396')
+              page.evaluate('s => nqOpen(parseReceipt(s, new Date(2026,10,20)))', txt)
+              assert 'A tételek összege' in page.inner_text('#nqtot') and page.is_visible('[data-a=nqdiff]')
+              page.click('[data-a=nqdiff]')
+              assert page.locator('.nql').count() == 6 and page.evaluate('NQ.lines[5].amt') == '500'
+              n = page.evaluate('S.tx.length')
+              page.click('#nqsv')
+              page.wait_for_timeout(150)
+              t = page.evaluate('S.tx[S.tx.length-1]')
+              assert page.evaluate('S.tx.length') == n + 1 and t['amt'] == 4396 and len(t['rl']) == 6
+
+
+          def test_receipt_paste_via_ui(page):
+              boot(page, RCAT)
+              page.click('.fab')
+              page.click('[data-a=nqpaste]')
+              page.fill('#nqp', RECEIPTS['spar'])
+              page.click('[data-a=nqparse]')
+              assert page.locator('.nql').count() == 2
+              assert page.input_value('#nqs') == 'Spar'
+              page.click('[data-a=nqcancel]')
+              assert not page.is_visible('#sh')
+          PYEOF
+          pytest tests -q
